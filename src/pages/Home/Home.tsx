@@ -1,8 +1,15 @@
 import { Grid, Box, Typography } from "@mui/material";
 import Dropdown from "./Dropdown";
 import Category from "./Category";
+import SubCategory from "./SubCategory";
+import { useState } from "react";
 
 export default function Home() {
+  const [selectedCategory, setSelectedCategorey] = useState(0);
+
+  const handleCategorySelectionProcess = (id: number) => {
+    setSelectedCategorey(id);
+  };
   return (
     <Box>
       <Typography align="center" variant="h3" sx={{ fontweight: 900 }}>
@@ -20,7 +27,8 @@ export default function Home() {
         </Typography>
       </Box>
 
-      <Category />
+      <Category handleCategorySelection={handleCategorySelectionProcess} />
+      {selectedCategory ? <SubCategory categoryId={selectedCategory} /> : null}
     </Box>
   );
 }

@@ -9,8 +9,6 @@ import Itemslist from "./Itemslist";
 export default function Dashboard() {
   const [activeComponent, setActiveComponent] = useState("dashboard");
   return (
-    //
-    //mt={4} mx="auto" justifyContent="center"
     <Grid container m={0}>
       <Sidebar setActiveComponent={setActiveComponent} />
 

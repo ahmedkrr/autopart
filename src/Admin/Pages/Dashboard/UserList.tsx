@@ -18,6 +18,8 @@ import {
 } from "@mui/material";
 import EdituserPopups from "../../componants/EdituserPopups";
 
+import { useToggle } from "../../../common/hooks/useToggle";
+
 interface users {
   id: number;
   name: string;
@@ -34,6 +36,7 @@ interface users {
 
 export default function UserList() {
   const [usersList, setUsersList] = useState<users[]>([]);
+  const [openEditUserPopUp, editUserPopUpToggle] = useToggle();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -66,20 +69,11 @@ export default function UserList() {
       }
     }
   };
-  const [open, setOpen] = useState(false);
 
   const handleUpdate = (userId: number) => {
     // Handle the update operation here
-    setOpen(true);
+    editUserPopUpToggle();
   };
-  if (open == true) {
-    return (
-      <div>
-        {/* Other JSX components */}
-        <EdituserPopups open={open} />
-      </div>
-    );
-  }
 
   return (
     <Box>
@@ -163,6 +157,10 @@ export default function UserList() {
           </Table>
         </TableContainer>
       </Box>
+      <EdituserPopups
+        open={openEditUserPopUp}
+        togglePopUp={editUserPopUpToggle}
+      />
     </Box>
   );
 }
