@@ -1,3 +1,10 @@
+import { Grid } from "@mui/material";
+import BannerCompany from "./componant/BannerCompany";
+
 export default function Companyprofile() {
-  return <div>companyprofile</div>;
+  return (
+    <Grid container>
+      <BannerCompany />
+    </Grid>
+  );
 }

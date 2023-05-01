@@ -18,6 +18,7 @@ import InputBase from "@mui/material/InputBase";
 import { useEffect } from "react";
 import { useNavigate } from "react-router";
 import { jwtdecoder } from "../../../Jwtdecode";
+import { NavLink } from "react-router-dom";
 // const pages = ["Products", "Pricing", "Blog"];
 
 export function Navbar() {
@@ -26,8 +27,11 @@ export function Navbar() {
 
   const storedToken = localStorage.getItem("token") ?? "";
   const decodedToken = jwtdecoder(storedToken);
-  const isCompanyOwner = decodedToken?.IsCompanyOwner.toLowerCase?.();
+  const isCompanyOwner =
+    decodedToken?.IsCompanyOwner.toLowerCase?.() === "true";
   const [companyowner, setcompanyowner] = useState(false);
+  const [IsAdmin, setIsAdmin] = useState(false);
+  const isAdmin = decodedToken?.isAdmin.toLowerCase?.() === "true";
 
   function handleNavigation() {
     navigate("/login");
@@ -35,9 +39,8 @@ export function Navbar() {
   useEffect(() => {
     if (storedToken != "") {
       setLogin(true);
-
-      const t = isCompanyOwner === "true";
-      setcompanyowner(t);
+      setIsAdmin(isAdmin);
+      setcompanyowner(isCompanyOwner);
     } else {
       setLogin(false);
     }
@@ -113,25 +116,24 @@ export function Navbar() {
           <Box sx={{ display: "flex", mr: 1 }}>
             <GiCarWheel size={40} />
           </Box>
-
-          <Typography
-            variant="h6"
-            noWrap
-            component="a"
-            href="/"
-            sx={{
-              mr: 2,
-              display: "flex",
-              fontFamily: "monospace",
-              fontWeight: 700,
-              letterSpacing: ".3rem",
-              color: "inherit",
-              textDecoration: "none",
-            }}
-          >
-            AutoPart
-          </Typography>
-
+          <Box onClick={() => navigate("/")}>
+            <Typography
+              variant="h6"
+              noWrap
+              sx={{
+                mr: 2,
+                display: "flex",
+                fontFamily: "monospace",
+                fontWeight: 700,
+                letterSpacing: ".3rem",
+                color: "inherit",
+                textDecoration: "none",
+                cursor: "pointer",
+              }}
+            >
+              AutoPart
+            </Typography>
+          </Box>
           <Box sx={{ flexGrow: 1, display: "flex" }}>
             <Search>
               <SearchIconWrapper>
@@ -167,6 +169,11 @@ export function Navbar() {
                 open={Boolean(anchorElUser)}
                 onClose={handleCloseUserMenu}
               >
+                {IsAdmin && (
+                  <MenuItem onClick={() => navigate("/admin/Dashboard")}>
+                    Admin Dashboard
+                  </MenuItem>
+                )}
                 {companyowner || false ? (
                   <MenuItem onClick={() => navigate("/companyprofile")}>
                     My Company

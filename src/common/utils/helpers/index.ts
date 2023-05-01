@@ -12,3 +12,15 @@ export function isUserAdmin() {
 
   return false;
 }
+export function companyowner() {
+  const storedToken = localStorage.getItem("token");
+
+  if (storedToken !== null) {
+    const decodedToken = jwtdecoder(storedToken);
+    if (decodedToken != null) {
+      return decodedToken.CompanyId;
+    }
+  }
+
+  return 0;
+}
