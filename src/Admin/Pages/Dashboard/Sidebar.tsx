@@ -5,7 +5,7 @@ import { BsFillFilePostFill } from "react-icons/bs";
 import { MdCategory } from "react-icons/md";
 import { AiOutlineCar } from "react-icons/ai";
 import { GiCarWheel } from "react-icons/gi";
-// import UserList from "./userlist";
+import { BiCategory } from "react-icons/bi";
 
 interface SidebarProps {
   setActiveComponent: (component: string) => void;
@@ -21,8 +21,8 @@ export default function Sidebar({ setActiveComponent }: SidebarProps) {
       sx={{
         backgroundColor: "greys",
         height: "100%",
-        width: "200px",
-        borderRight: "1px solid #ccc",
+        // width: "200px",
+        border: "1px solid #ccc",
         bor: "1px solid #ccc",
       }}
       mr={0}
@@ -47,7 +47,7 @@ export default function Sidebar({ setActiveComponent }: SidebarProps) {
         User List
       </Typography>
 
-      <Divider />
+      {/* <Divider /> */}
 
       <Typography paddingLeft={4}>
         <Box mr={2} display="inline-flex">
@@ -59,7 +59,7 @@ export default function Sidebar({ setActiveComponent }: SidebarProps) {
         Items List
       </Typography>
 
-      <Divider />
+      {/* <Divider /> */}
 
       <Typography paddingLeft={4}>
         <Box mr={2} display="inline-flex">
@@ -71,7 +71,7 @@ export default function Sidebar({ setActiveComponent }: SidebarProps) {
         Car List
       </Typography>
 
-      <Divider />
+      {/* <Divider /> */}
 
       <Typography paddingLeft={4}>
         <Box mr={2} display="inline-flex">
@@ -81,6 +81,16 @@ export default function Sidebar({ setActiveComponent }: SidebarProps) {
           />
         </Box>
         Category List
+      </Typography>
+
+      <Typography paddingLeft={4}>
+        <Box mr={2} display="inline-flex">
+          <BiCategory
+            fontSize={30}
+            onClick={() => setActiveComponent("Subcategory")}
+          />
+        </Box>
+        SubCategory
       </Typography>
     </Stack>
   );

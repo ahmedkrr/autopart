@@ -4,9 +4,6 @@ import AddIcon from "@mui/icons-material/Add";
 import { useToggle } from "../../../common/hooks/useToggle";
 
 import {
-  Box,
-  DialogActions,
-  DialogContent,
   Grid,
   Table,
   TableContainer,
@@ -18,19 +15,33 @@ import {
   Button,
   Paper,
   Fab,
+  InputLabel,
+  FormControl,
+  MenuItem,
+  Select,
 } from "@mui/material";
 import { useEffect, useState } from "react";
 import { API_ENDPOINT } from "../../../API";
 import axios from "axios";
-import AddCategory from "../../componants/AddCategory";
+import AddSubCategory from "../../componants/AddSubCategory";
 
 type Categories = {
   id: number;
   categoryName: string;
   imageData: string;
 };
-export default function Categorylist() {
+type SubCategories = {
+  subCategoryId: number;
+  categoryId: number;
+  subCategoryName: string;
+  imageData: string;
+};
+
+export default function SubCategory() {
   const [categories, setcategoreylist] = useState<Categories[]>([]);
+  const [subCategorylist, setsubCategorylist] = useState<SubCategories[]>([]);
+
+  const [selectedCategory, setSelectedCategory] = useState("");
   const [openAddCategoreyPopUp, AddCategoryPopUpToggle] = useToggle();
 
   const handleAddCategory = () => {
@@ -48,24 +59,39 @@ export default function Categorylist() {
       console.log(error);
     }
   };
+  const fetchSubCategory = async () => {
+    try {
+      const response = await axios.get(
+        `${API_ENDPOINT}lookups/GetSubCategory/${selectedCategory}`
+      );
+      if (response.data) {
+        setsubCategorylist(response.data);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
   useEffect(() => {
     fetchData();
   }, []);
+  useEffect(() => {
+    fetchSubCategory();
+  }, [selectedCategory, openAddCategoreyPopUp]);
 
-  const handleDelete = async (categoreyid: number) => {
+  const handleDelete = async (subId: number) => {
     try {
       const confirmed = window.confirm(
-        ` Are you sure you want to delete this Category ID = ${categoreyid}?`
+        ` Are you sure you want to delete this Category ID = ${subId} ?`
       );
 
       if (confirmed) {
         const response = await axios.delete(
-          `${API_ENDPOINT}admin/deletecategory/${categoreyid}`
+          `${API_ENDPOINT}admin/deletesubcategory/${subId}`
         );
 
         if (response.data.success) {
           alert(`Category Deleted successfully! ${response.data.categoryName}`);
-          fetchData();
+          fetchSubCategory();
         }
       }
     } catch (error) {
@@ -77,8 +103,27 @@ export default function Categorylist() {
     <Grid container justifyContent="center">
       <Grid item xs={12}>
         <Typography align="center" variant="h4">
-          Category
+          Sub Category
         </Typography>
+      </Grid>
+
+      <Grid item xs={11} sx={{ pt: "10px", pb: "15px" }}>
+        <FormControl fullWidth>
+          <InputLabel id="demo-simple-select-label">Select Category</InputLabel>
+          <Select
+            labelId="demo-simple-select-label"
+            id="demo-simple-select"
+            value={selectedCategory}
+            label="Select Category"
+            onChange={(event) => setSelectedCategory(event.target.value)}
+          >
+            {categories?.map((category) => (
+              <MenuItem key={category.id} value={category.id}>
+                {category.categoryName}
+              </MenuItem>
+            ))}
+          </Select>
+        </FormControl>
       </Grid>
 
       <Grid item xs={11}>
@@ -87,22 +132,31 @@ export default function Categorylist() {
             <TableHead sx={{ background: "grey" }}>
               <TableRow>
                 <TableCell align="center">id</TableCell>
-                <TableCell align="center">Category Name</TableCell>
+                <TableCell align="center">Category id</TableCell>
+                <TableCell align="center">Sub Name</TableCell>
                 <TableCell align="center">Photo</TableCell>
                 <TableCell align="center">Delete</TableCell>
                 <TableCell align="center">Update</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
-              {categories.map((categorey) => (
-                <TableRow key={categorey.id}>
-                  <TableCell align="center">{categorey.id}</TableCell>
-                  <TableCell align="center">{categorey.categoryName}</TableCell>
+              {subCategorylist.map((subcategorylist) => (
+                <TableRow key={subcategorylist.subCategoryId}>
+                  <TableCell align="center">
+                    {subcategorylist.subCategoryId}
+                  </TableCell>
+                  <TableCell align="center">
+                    {subcategorylist.categoryId}
+                  </TableCell>
+                  <TableCell align="center">
+                    {subcategorylist.subCategoryName}
+                  </TableCell>
+
                   <TableCell align="center">
                     <img
-                      // width="184px"
-                      // height="120px"
-                      src={`data:image/jpeg;base64,${categorey.imageData}`}
+                      width="184px"
+                      height="120px"
+                      src={`data:image/jpeg;base64,${subcategorylist.imageData}`}
                     />
                   </TableCell>
 
@@ -111,7 +165,9 @@ export default function Categorylist() {
                       variant="outlined"
                       startIcon={<DeleteIcon />}
                       style={{ backgroundColor: "red", color: "white" }}
-                      onClick={() => handleDelete(categorey.id)}
+                      onClick={() =>
+                        handleDelete(subcategorylist.subCategoryId)
+                      }
                     >
                       Delete
                     </Button>
@@ -134,22 +190,25 @@ export default function Categorylist() {
         </TableContainer>
       </Grid>
 
-      <Fab
-        color="primary"
-        aria-label="add"
-        sx={{
-          position: "fixed",
-          bottom: "25px",
-          right: "25px",
-        }}
-        onClick={handleAddCategory}
-      >
-        <AddIcon />
-      </Fab>
+      {selectedCategory && (
+        <Fab
+          color="primary"
+          aria-label="add"
+          sx={{
+            position: "fixed",
+            bottom: "25px",
+            right: "25px",
+          }}
+          onClick={handleAddCategory}
+        >
+          <AddIcon />
+        </Fab>
+      )}
 
-      <AddCategory
+      <AddSubCategory
         open={openAddCategoreyPopUp}
         togglePopUp={AddCategoryPopUpToggle}
+        categoryId={parseInt(selectedCategory)}
       />
     </Grid>
   );

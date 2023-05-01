@@ -12,6 +12,7 @@ import Dashboard from "./Admin/Pages/Dashboard/Dashboard";
 import AdminLogin from "./Admin/Pages/AdminLogin";
 import { jwtdecoder } from "./Jwtdecode";
 import { useEffect, useState } from "react";
+import { isUserAdmin } from "./common/utils/helpers";
 
 function App() {
   return (
@@ -52,25 +53,10 @@ function AppContent() {
   ]);
 
   const isAdminRoute = location.pathname.startsWith("/admin");
-  const [isUserAdmin, setUserAdmin] = useState(false);
-  useEffect(() => {
-    const storedToken = localStorage.getItem("token");
-    if (storedToken != null) {
-      const decodedToken = jwtdecoder(storedToken);
-      if (decodedToken != null) {
-        setUserAdmin(decodedToken.isAdmin.toLowerCase?.() === "true");
-        console.log(decodedToken.isAdmin);
-      }
-    }
-  });
+  const isAdmin = isUserAdmin();
 
   function ProtectedDashboard() {
-    if (isUserAdmin) {
-      console.log(isUserAdmin);
-      return <Dashboard />;
-    } else {
-      return <AdminLogin />;
-    }
+    return <>{isAdmin ? <Dashboard /> : <AdminLogin />}</>;
   }
 
   return (
