@@ -13,7 +13,7 @@ export default function Home() {
   return (
     <Box>
       <Typography align="center" variant="h3" sx={{ fontweight: 1000, m: 1 }}>
-        𝑶𝒏𝒍𝒊𝒏𝒆 𝑪𝒂𝒓 <b style={{ color: "blue" }}>𝑷𝒂𝒓𝒕</b>
+        𝑶𝒏𝒍𝒊𝒏𝒆 𝑪𝒂𝒓 <b style={{ color: "gray" }}>𝑷𝒂𝒓𝒕</b>
       </Typography>
 
       <Grid sx={{}} mt="4px">

@@ -41,6 +41,7 @@ export default function Sidebar({ setActiveComponent }: SidebarProps) {
         <Box mr={2} display="inline-flex">
           <FaUsersCog
             fontSize={30}
+            cursor={"pointer"}
             onClick={() => setActiveComponent("Userlist")}
           />
         </Box>
@@ -53,6 +54,7 @@ export default function Sidebar({ setActiveComponent }: SidebarProps) {
         <Box mr={2} display="inline-flex">
           <BsFillFilePostFill
             fontSize={30}
+            cursor={"pointer"}
             onClick={() => setActiveComponent("Itemslist")}
           />
         </Box>
@@ -65,10 +67,33 @@ export default function Sidebar({ setActiveComponent }: SidebarProps) {
         <Box mr={2} display="inline-flex">
           <AiOutlineCar
             fontSize={30}
+            cursor={"pointer"}
             onClick={() => setActiveComponent("Carlist")}
           />
         </Box>
         Car List
+      </Typography>
+
+      <Typography paddingLeft={4}>
+        <Box mr={2} display="inline-flex">
+          <AiOutlineCar
+            fontSize={30}
+            cursor={"pointer"}
+            onClick={() => setActiveComponent("Car Type")}
+          />
+        </Box>
+        Car Type
+      </Typography>
+
+      <Typography paddingLeft={4}>
+        <Box mr={2} display="inline-flex">
+          <AiOutlineCar
+            fontSize={30}
+            cursor={"pointer"}
+            onClick={() => setActiveComponent("Car Manufacture")}
+          />
+        </Box>
+        Car Manufacture
       </Typography>
 
       {/* <Divider /> */}
@@ -77,6 +102,7 @@ export default function Sidebar({ setActiveComponent }: SidebarProps) {
         <Box mr={2} display="inline-flex">
           <MdCategory
             fontSize={30}
+            cursor={"pointer"}
             onClick={() => setActiveComponent("Categorylist")}
           />
         </Box>
@@ -87,6 +113,7 @@ export default function Sidebar({ setActiveComponent }: SidebarProps) {
         <Box mr={2} display="inline-flex">
           <BiCategory
             fontSize={30}
+            cursor={"pointer"}
             onClick={() => setActiveComponent("Subcategory")}
           />
         </Box>

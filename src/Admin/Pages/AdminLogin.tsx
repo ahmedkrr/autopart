@@ -10,7 +10,7 @@ import { API_ENDPOINT } from "../../API";
 export default function AdminLogin() {
   interface Signin {
     email: string;
-    password: string;
+    password: Date;
   }
   const {
     register,

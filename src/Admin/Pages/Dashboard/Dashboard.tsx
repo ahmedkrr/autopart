@@ -6,6 +6,8 @@ import CarList from "./CarList";
 import Categorylist from "./Categorylist";
 import Itemslist from "./Itemslist";
 import SubCategory from "./SubCategory";
+import TypeCarlist from "./TypeCarlist";
+import YearCarList from "./YearCarList";
 
 export default function Dashboard() {
   const [activeComponent, setActiveComponent] = useState("dashboard");
@@ -20,6 +22,8 @@ export default function Dashboard() {
       <Grid item xs={10}>
         {activeComponent === "Userlist" && <UserList />}
         {activeComponent === "Carlist" && <CarList />}
+        {activeComponent === "Car Type" && <TypeCarlist />}
+        {activeComponent === "Car Manufacture" && <YearCarList />}
         {activeComponent === "Itemslist" && <Itemslist />}
         {activeComponent === "Categorylist" && <Categorylist />}
         {activeComponent === "Subcategory" && <SubCategory />}

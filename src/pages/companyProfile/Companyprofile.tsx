@@ -1,6 +1,7 @@
 import { Grid, Stack, Typography } from "@mui/material";
 import BannerCompany from "./componant/BannerCompany";
 import ItemPushUP from "./componant/ItemPushUP";
+import FilterItems from "./componant/FilterItems";
 
 export default function Companyprofile() {
   return (
@@ -17,9 +18,11 @@ export default function Companyprofile() {
           mt={2}
           mx="auto"
           justifyContent="center"
-          sx={{ border: "1px solid gray", height: "70px" }}
+          sx={{ border: "1px solid rgb(220,220,220,.4)", height: "80px" }}
         >
-          <Grid item mt={2}></Grid>
+          <Grid container item alignItems="center" xs={12}>
+            <FilterItems />
+          </Grid>
         </Grid>
 
         <Grid
