@@ -12,18 +12,16 @@ export default function Home() {
   };
   return (
     <Box>
-      <Typography align="center" variant="h3" sx={{ fontweight: 900 }}>
-        Online CAR <b style={{ color: "blue" }}>Part</b>
+      <Typography align="center" variant="h3" sx={{ fontweight: 1000, m: 1 }}>
+        𝑶𝒏𝒍𝒊𝒏𝒆 𝑪𝒂𝒓 <b style={{ color: "blue" }}>𝑷𝒂𝒓𝒕</b>
       </Typography>
-      <Typography align="center" variant="body2" sx={{ fontweight: 100 }}>
-        See The Car World From One Place
-      </Typography>
-      <Grid sx={{}}>
+
+      <Grid sx={{}} mt="4px">
         <Dropdown />
       </Grid>
-      <Box sx={{ mt: 2 }}>
-        <Typography variant="h6" align="center">
-          <b>SHOP BY CATEGORY</b>
+      <Box sx={{ mt: 3 }}>
+        <Typography variant="h5" align="center">
+          <b>𝑺𝑯𝑶𝑷 𝑩𝒀 𝑪𝑨𝑻𝑬𝑮𝑶𝑹𝒀</b>
         </Typography>
       </Box>
 

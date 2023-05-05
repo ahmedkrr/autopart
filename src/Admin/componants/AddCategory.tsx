@@ -24,11 +24,7 @@ export default function AddCategory(props: Addcategory) {
   const [photoname, setphotoname] = useState("");
   const [categoryname, setCategoryname] = useState("");
   const [photofile, setphotofile] = useState<File | null>(null);
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm();
+  const { handleSubmit } = useForm();
   const formData = new FormData();
   formData.append("CategoryName", categoryname);
   formData.append("file", photofile != null ? photofile : "");
