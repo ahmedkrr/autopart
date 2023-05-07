@@ -11,6 +11,7 @@ import { companyowner } from "../../../common/utils/helpers";
 import { Grid } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { AiFillEdit } from "react-icons/ai";
+import Pagination from "@mui/material/Pagination";
 
 type ItemsForm = {
   id: number;
@@ -31,6 +32,12 @@ type ItemsForm = {
 export default function ItemPushUP() {
   const [items, setItems] = useState<ItemsForm[]>([]);
   const [showMore, setShowMore] = useState(false);
+  const [page, setPage] = useState(1);
+
+  const pageCount = Math.ceil(items.length / 8);
+  const itemsPerPage = 8;
+  const startIndex = (page - 1) * itemsPerPage;
+  const visibleItems = items.slice(startIndex, startIndex + itemsPerPage);
 
   const GetItems = async () => {
     try {
@@ -70,13 +77,13 @@ export default function ItemPushUP() {
   return (
     <>
       {items.length > 0 &&
-        items.map((item) => (
+        visibleItems.map((item) => (
           <Grid item xs={3} key={item.id}>
             <Card sx={{ maxWidth: 345 }}>
               <CardMedia
                 sx={{ height: 140 }}
                 image={`data:image/jpeg;base64,${item?.imageData}`}
-                title="green iguana"
+                title="Item Photo"
               />
 
               <CardContent>
@@ -123,6 +130,15 @@ export default function ItemPushUP() {
             </Card>
           </Grid>
         ))}
+      <Grid container xs={12} justifyContent="center" mt={3}>
+        <Pagination
+          count={pageCount}
+          variant="outlined"
+          onChange={(event, page) => {
+            setPage(page);
+          }}
+        />
+      </Grid>
     </>
   );
 }

@@ -83,13 +83,9 @@ export default function FilterItems() {
     fetchData();
   }, []);
 
-  // useEffect(() => {
-  //   props.handleCarSelection(
-  //     selectedCar?.id == undefined ? 0 : selectedCar?.id,
-  //     selectedCarType?.id == undefined ? 0 : selectedCarType?.id,
-  //     selectedCarYear?.id == undefined ? 0 : selectedCarYear?.id
-  //   );
-  // }, [, selectedCar?.id, selectedCarType?.id, selectedCarYear?.id]);
+  // const filteritemsbySearch= () =>{
+  //   cars.
+  // }
 
   return (
     <Grid container item xs={12} justifyContent="center">

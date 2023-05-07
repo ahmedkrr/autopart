@@ -18,6 +18,7 @@ import {
   Button,
   Paper,
   Fab,
+  Pagination,
 } from "@mui/material";
 import { useEffect, useState } from "react";
 import { API_ENDPOINT } from "../../../API";
@@ -32,6 +33,12 @@ type Categories = {
 export default function Categorylist() {
   const [categories, setcategoreylist] = useState<Categories[]>([]);
   const [openAddCategoreyPopUp, AddCategoryPopUpToggle] = useToggle();
+
+  const [page, setPage] = useState(1);
+  const pageCount = Math.ceil(categories.length / 5);
+  const itemsPerPage = 5;
+  const startIndex = (page - 1) * itemsPerPage;
+  const visibleItems = categories.slice(startIndex, startIndex + itemsPerPage);
 
   const handleAddCategory = () => {
     // Handle the update operation here
@@ -74,83 +81,97 @@ export default function Categorylist() {
   };
 
   return (
-    <Grid container justifyContent="center">
-      <Grid item xs={12}>
-        <Typography align="center" variant="h4">
-          Category
-        </Typography>
-      </Grid>
+    <>
+      <Grid container justifyContent="center">
+        <Grid item xs={12}>
+          <Typography align="center" variant="h4">
+            Category
+          </Typography>
+        </Grid>
 
-      <Grid item xs={11}>
-        <TableContainer component={Paper}>
-          <Table>
-            <TableHead sx={{ background: "grey" }}>
-              <TableRow>
-                <TableCell align="center">id</TableCell>
-                <TableCell align="center">Category Name</TableCell>
-                <TableCell align="center">Photo</TableCell>
-                <TableCell align="center">Delete</TableCell>
-                <TableCell align="center">Update</TableCell>
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {categories.map((categorey) => (
-                <TableRow key={categorey.id}>
-                  <TableCell align="center">{categorey.id}</TableCell>
-                  <TableCell align="center">{categorey.categoryName}</TableCell>
-                  <TableCell align="center">
-                    <img
-                      // width="184px"
-                      // height="120px"
-                      src={`data:image/jpeg;base64,${categorey.imageData}`}
-                    />
-                  </TableCell>
-
-                  <TableCell align="center">
-                    <Button
-                      variant="outlined"
-                      startIcon={<DeleteIcon />}
-                      style={{ backgroundColor: "red", color: "white" }}
-                      onClick={() => handleDelete(categorey.id)}
-                    >
-                      Delete
-                    </Button>
-                  </TableCell>
-
-                  <TableCell align="center">
-                    <Button
-                      style={{ backgroundColor: "green", color: "white" }}
-                      variant="outlined"
-                      startIcon={<AiFillEdit />}
-                      // onClick={() => handleUpdate(user.id)}
-                    >
-                      Edit
-                    </Button>
-                  </TableCell>
+        <Grid item xs={11}>
+          <TableContainer component={Paper}>
+            <Table>
+              <TableHead sx={{ background: "grey" }}>
+                <TableRow>
+                  <TableCell align="center">id</TableCell>
+                  <TableCell align="center">Category Name</TableCell>
+                  <TableCell align="center">Photo</TableCell>
+                  <TableCell align="center">Delete</TableCell>
+                  <TableCell align="center">Update</TableCell>
                 </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-        </TableContainer>
+              </TableHead>
+              <TableBody>
+                {visibleItems.map((categorey) => (
+                  <TableRow key={categorey.id}>
+                    <TableCell align="center">{categorey.id}</TableCell>
+                    <TableCell align="center">
+                      {categorey.categoryName}
+                    </TableCell>
+                    <TableCell align="center">
+                      <img
+                        // width="184px"
+                        // height="120px"
+                        src={`data:image/jpeg;base64,${categorey.imageData}`}
+                      />
+                    </TableCell>
+
+                    <TableCell align="center">
+                      <Button
+                        variant="outlined"
+                        startIcon={<DeleteIcon />}
+                        style={{ backgroundColor: "red", color: "white" }}
+                        onClick={() => handleDelete(categorey.id)}
+                      >
+                        Delete
+                      </Button>
+                    </TableCell>
+
+                    <TableCell align="center">
+                      <Button
+                        style={{ backgroundColor: "green", color: "white" }}
+                        variant="outlined"
+                        startIcon={<AiFillEdit />}
+                        // onClick={() => handleUpdate(user.id)}
+                      >
+                        Edit
+                      </Button>
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </TableContainer>
+        </Grid>
+
+        <Fab
+          color="primary"
+          aria-label="add"
+          sx={{
+            position: "fixed",
+            bottom: "25px",
+            right: "25px",
+          }}
+          onClick={handleAddCategory}
+        >
+          <AddIcon />
+        </Fab>
+
+        <AddCategory
+          open={openAddCategoreyPopUp}
+          togglePopUp={AddCategoryPopUpToggle}
+        />
       </Grid>
 
-      <Fab
-        color="primary"
-        aria-label="add"
-        sx={{
-          position: "fixed",
-          bottom: "25px",
-          right: "25px",
-        }}
-        onClick={handleAddCategory}
-      >
-        <AddIcon />
-      </Fab>
-
-      <AddCategory
-        open={openAddCategoreyPopUp}
-        togglePopUp={AddCategoryPopUpToggle}
-      />
-    </Grid>
+      <Grid container xs={12} justifyContent="center" mt={3}>
+        <Pagination
+          count={pageCount}
+          variant="outlined"
+          onChange={(event, page) => {
+            setPage(page);
+          }}
+        />
+      </Grid>
+    </>
   );
 }

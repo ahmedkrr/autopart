@@ -1,4 +1,4 @@
-import { Grid, Stack, Typography } from "@mui/material";
+import { Grid } from "@mui/material";
 import BannerCompany from "./componant/BannerCompany";
 import ItemPushUP from "./componant/ItemPushUP";
 import FilterItems from "./componant/FilterItems";
@@ -24,6 +24,7 @@ export default function Companyprofile() {
             <FilterItems />
           </Grid>
         </Grid>
+        {/* //here i need to push item by filterin  once by cars and once by category  */}
 
         <Grid
           container
@@ -34,7 +35,6 @@ export default function Companyprofile() {
           mx="auto"
           py={3}
           pr={3}
-          // spacingbe={1}
           sx={{}}
         >
           <ItemPushUP />
