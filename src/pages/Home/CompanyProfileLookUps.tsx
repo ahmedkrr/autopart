@@ -1,15 +1,18 @@
 import { Grid } from "@mui/material";
-import BannerCompany from "./componant/BannerCompany";
-import ItemPushUP from "./componant/ItemPushUP";
-import FilterItems from "./componant/FilterItems";
+
 import { useState } from "react";
+import BannerCompany from "./companyProfileLookUps/BannerCompany";
+import ItemPushUP from "./companyProfileLookUps/ItemPushUp";
+import FilterItems from "../companyProfile/componant/FilterItems";
+import { useLocation } from "react-router-dom";
 
-export default function Companyprofile() {
+export default function CompanyProfileLookUps() {
   const [filters, setFilters] = useState("");
-
+  const location = useLocation();
   const handleSearchBarpro = (searchBar: string) => {
     setFilters(searchBar);
   };
+  console.log(location.state.companyid);
   return (
     <>
       <Grid container>
@@ -31,7 +34,6 @@ export default function Companyprofile() {
             <FilterItems handleSearchBar={handleSearchBarpro} />
           </Grid>
         </Grid>
-        {/* //here i need to push item by filterin  once by cars and once by category  */}
 
         <Grid
           container

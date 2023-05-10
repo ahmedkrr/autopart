@@ -1,6 +1,6 @@
 import { Box, Typography } from "@mui/material";
 
-function NotAuthorized() {
+export function NotAuthorized() {
   return (
     <Box
       display="flex"
@@ -16,5 +16,19 @@ function NotAuthorized() {
     </Box>
   );
 }
-
-export default NotAuthorized;
+export function NotFound() {
+  return (
+    <Box
+      display="flex"
+      flexDirection="column"
+      justifyContent="center"
+      alignItems="center"
+      height="100vh"
+      bgcolor="error.main"
+    >
+      <Typography variant="h2" color="error.contrastText">
+        Not Found Err 404
+      </Typography>
+    </Box>
+  );
+}

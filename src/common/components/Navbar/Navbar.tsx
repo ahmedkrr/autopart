@@ -18,8 +18,6 @@ import InputBase from "@mui/material/InputBase";
 import { useEffect } from "react";
 import { useNavigate } from "react-router";
 import { jwtdecoder } from "../../../Jwtdecode";
-import { NavLink } from "react-router-dom";
-// const pages = ["Products", "Pricing", "Blog"];
 
 export function Navbar() {
   const [Login, setLogin] = useState(true);

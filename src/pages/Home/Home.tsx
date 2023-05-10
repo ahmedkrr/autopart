@@ -1,14 +1,16 @@
 import { Grid, Box, Typography } from "@mui/material";
-import Dropdown from "./Dropdown";
-import Category from "./Category";
-import SubCategory from "./SubCategory";
+import Dropdown from "./HomeComponant/Dropdown";
+import Category from "./HomeComponant/Category";
+import SubCategory from "./HomeComponant/SubCategory";
 import { useState } from "react";
 
 export default function Home() {
   const [selectedCategory, setSelectedCategorey] = useState(0);
+  const [Categoryname, setCategoryname] = useState("");
 
-  const handleCategorySelectionProcess = (id: number) => {
+  const handleCategorySelectionProcess = (id: number, categoryName: string) => {
     setSelectedCategorey(id);
+    setCategoryname(categoryName);
   };
   return (
     <Box>
@@ -19,6 +21,7 @@ export default function Home() {
       <Grid sx={{}} mt="4px">
         <Dropdown />
       </Grid>
+
       <Box sx={{ mt: 3 }}>
         <Typography variant="h5" align="center">
           <b>𝑺𝑯𝑶𝑷 𝑩𝒀 𝑪𝑨𝑻𝑬𝑮𝑶𝑹𝒀</b>
@@ -26,7 +29,13 @@ export default function Home() {
       </Box>
 
       <Category handleCategorySelection={handleCategorySelectionProcess} />
-      {selectedCategory ? <SubCategory categoryId={selectedCategory} /> : null}
+
+      {selectedCategory ? (
+        <SubCategory
+          categoryId={selectedCategory}
+          categoryname={Categoryname}
+        />
+      ) : null}
     </Box>
   );
 }

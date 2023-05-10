@@ -4,7 +4,8 @@ import { API_ENDPOINT } from "../../../API";
 import { companyowner } from "../../../common/utils/helpers";
 import { Grid } from "@mui/material";
 import Pagination from "@mui/material/Pagination";
-import Carditem from "./Carditem";
+import CardLookUps from "../itemsFilterByCarComponant/CardLookUps";
+import { useLocation } from "react-router-dom";
 
 type ItemsForm = {
   id: number;
@@ -30,7 +31,7 @@ type SearchBar = {
 export default function ItemPushUP({ searchBar }: SearchBar) {
   const [items, setItems] = useState<ItemsForm[]>([]);
   const [page, setPage] = useState(1);
-
+  const location = useLocation();
   useEffect(() => {
     console.log();
   });
@@ -49,9 +50,9 @@ export default function ItemPushUP({ searchBar }: SearchBar) {
 
   const GetItems = async () => {
     try {
-      const companyid = companyowner();
+      console.log(location.state.companyid);
       const response = await axios.get(
-        `${API_ENDPOINT}item/${companyid}/GetallItem`
+        `${API_ENDPOINT}item/${location.state.companyid}/GetallItem`
       );
       console.log(response.data);
       if (response.status == 200) {
@@ -64,30 +65,12 @@ export default function ItemPushUP({ searchBar }: SearchBar) {
     GetItems();
   }, []);
 
-  const deleteItem = async (ItemmId: number) => {
-    const confirmed = window.confirm(
-      ` Are you sure you want to delete this user ID = ${ItemmId}?`
-    );
-    if (confirmed) {
-      try {
-        const response = await axios.delete(
-          `${API_ENDPOINT}item/DeleteItem/${ItemmId}`
-        );
-        console.log(response.status);
-        if (response.status == 200) {
-          window.alert("The Item Deleted successfully");
-          GetItems();
-        }
-      } catch {}
-    }
-  };
-
   return (
     <>
       {items.length > 0 &&
         visibleItems.map((item) => (
           <Grid item xs={3} key={item.id}>
-            <Carditem item={item} handleDelete={deleteItem} />
+            <CardLookUps item={item} />
           </Grid>
         ))}
       <Grid container xs={12} justifyContent="center" mt={3}>

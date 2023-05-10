@@ -1,10 +1,9 @@
 import { CircularProgress, Grid } from "@mui/material";
 import React, { useState, useEffect } from "react";
-import { API_ENDPOINT } from "../../API";
+import { API_ENDPOINT } from "../../../API";
 // import { NavLink } from "react-router-dom";
 import { Button } from "@mui/material";
 import axios from "axios";
-import SubCategory from "./SubCategory";
 
 interface Category {
   id: number;
@@ -13,7 +12,7 @@ interface Category {
   subCategories: string;
 }
 type CategoryProps = {
-  handleCategorySelection: (id: number) => void;
+  handleCategorySelection: (id: number, categoryName: string) => void;
 };
 
 export default function Category({ handleCategorySelection }: CategoryProps) {
@@ -37,7 +36,7 @@ export default function Category({ handleCategorySelection }: CategoryProps) {
           <Button
             onClick={() => {
               console.log(category.id);
-              handleCategorySelection(category.id);
+              handleCategorySelection(category.id, category.categoryName);
             }}
             style={{ textDecoration: "none", color: "black" }}
           >

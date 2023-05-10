@@ -228,6 +228,7 @@ export default function BannerCompany() {
           Created Date : {companyinfo?.creatDate}
         </Typography>
       </Grid>
+
       <Fab
         color="primary"
         aria-label="add"

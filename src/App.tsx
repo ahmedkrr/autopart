@@ -13,6 +13,11 @@ import AdminLogin from "./Admin/Pages/AdminLogin";
 import { jwtdecoder } from "./Jwtdecode";
 import { useEffect, useState } from "react";
 import { isUserAdmin } from "./common/utils/helpers";
+import ItemsFilter from "./pages/Home/ItemsFilter";
+import ItemsFilterByCar from "./pages/Home/ItemsFilterByCar";
+import { NotAuthorized, NotFound } from "./NotAuthorized";
+import FilterCategoryCar from "./pages/Home/FilterCategoryCar";
+import CompanyProfileLookUps from "./pages/Home/CompanyProfileLookUps";
 
 function App() {
   return (
@@ -43,6 +48,22 @@ function AppContent() {
       element: <Companyprofile />,
     },
     {
+      path: "/itemsFilter",
+      element: <ItemsFilter />,
+    },
+    {
+      path: "/CategorySelect/ItemsFilterByCar",
+      element: <ItemsFilterByCar />,
+    },
+    {
+      path: "/CategorySelect",
+      element: <FilterCategoryCar />,
+    },
+    {
+      path: "/ViewCompany",
+      element: <CompanyProfileLookUps />,
+    },
+    {
       path: "/admin/login",
       element: <AdminLogin />,
     },
@@ -50,13 +71,17 @@ function AppContent() {
       path: "/admin/dashboard",
       element: <ProtectedDashboard />,
     },
+    {
+      path: "*",
+      element: <NotFound />,
+    },
   ]);
 
   const isAdminRoute = location.pathname.startsWith("/admin");
   const isAdmin = isUserAdmin();
 
   function ProtectedDashboard() {
-    return <>{isAdmin ? <Dashboard /> : <AdminLogin />}</>;
+    return <>{isAdmin ? <Dashboard /> : <NotAuthorized />}</>;
   }
 
   return (

@@ -1,10 +1,11 @@
+import { useLocation } from "react-router-dom";
+import Typography from "@mui/material/Typography";
 import { useEffect, useState } from "react";
 import axios from "axios";
-import { API_ENDPOINT } from "../../../API";
-import { companyowner } from "../../../common/utils/helpers";
+import { API_ENDPOINT } from "../../API";
 import { Grid } from "@mui/material";
 import Pagination from "@mui/material/Pagination";
-import Carditem from "./Carditem";
+import CardLookUps from "./itemsFilterByCarComponant/CardLookUps";
 
 type ItemsForm = {
   id: number;
@@ -23,35 +24,21 @@ type ItemsForm = {
   imageData: string;
 };
 
-type SearchBar = {
-  searchBar: string;
-};
-
-export default function ItemPushUP({ searchBar }: SearchBar) {
+export default function ItemsFilterByCar() {
+  const location = useLocation();
   const [items, setItems] = useState<ItemsForm[]>([]);
   const [page, setPage] = useState(1);
-
-  useEffect(() => {
-    console.log();
-  });
-
-  const filteredItems = items.filter((item) =>
-    item.name.toLowerCase().includes(searchBar.toLowerCase())
-  );
 
   const pageCount = Math.ceil(items.length / 8);
   const itemsPerPage = 8;
   const startIndex = (page - 1) * itemsPerPage;
-  const visibleItems = filteredItems.slice(
-    startIndex,
-    startIndex + itemsPerPage
-  );
+  const visibleItems = items.slice(startIndex, startIndex + itemsPerPage);
 
   const GetItems = async () => {
     try {
-      const companyid = companyowner();
+      console.log(location.state.carId);
       const response = await axios.get(
-        `${API_ENDPOINT}item/${companyid}/GetallItem`
+        `${API_ENDPOINT}lookups/GetItemByCar/${location.state.carId}/${location.state.typeId}/${location.state.yearId}/${location.state.subcategoryId}`
       );
       console.log(response.data);
       if (response.status == 200) {
@@ -64,30 +51,34 @@ export default function ItemPushUP({ searchBar }: SearchBar) {
     GetItems();
   }, []);
 
-  const deleteItem = async (ItemmId: number) => {
-    const confirmed = window.confirm(
-      ` Are you sure you want to delete this user ID = ${ItemmId}?`
-    );
-    if (confirmed) {
-      try {
-        const response = await axios.delete(
-          `${API_ENDPOINT}item/DeleteItem/${ItemmId}`
-        );
-        console.log(response.status);
-        if (response.status == 200) {
-          window.alert("The Item Deleted successfully");
-          GetItems();
-        }
-      } catch {}
-    }
-  };
-
   return (
-    <>
+    <Grid
+      container
+      columnSpacing={4}
+      rowSpacing={1}
+      xs={12}
+      mt={1}
+      mx="auto"
+      py={3}
+      pr={3}
+      justifyContent="center"
+      alignItems="center"
+      height="100%"
+    >
+      <Grid item xs={12} border="2px solid gray">
+        <Typography textAlign="center" variant="h4">
+          {location.state.carName}-{location.state.typename}-
+          {location.state.yearname}
+        </Typography>
+
+        <Typography textAlign="center" variant="h5" sx={{ color: "gray" }}>
+          {location.state.subcategoryName} SubCategory
+        </Typography>
+      </Grid>
       {items.length > 0 &&
         visibleItems.map((item) => (
           <Grid item xs={3} key={item.id}>
-            <Carditem item={item} handleDelete={deleteItem} />
+            <CardLookUps item={item} />
           </Grid>
         ))}
       <Grid container xs={12} justifyContent="center" mt={3}>
@@ -99,6 +90,6 @@ export default function ItemPushUP({ searchBar }: SearchBar) {
           }}
         />
       </Grid>
-    </>
+    </Grid>
   );
 }

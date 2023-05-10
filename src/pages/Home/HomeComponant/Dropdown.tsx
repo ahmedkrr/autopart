@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import photoHome from "../../static/photoHome.webp";
-import { API_ENDPOINT } from "../../API";
+import photoHome from "../../../static/photoHome.webp";
+import { API_ENDPOINT } from "../../../API";
 import {
   FormControl,
   InputLabel,
@@ -12,7 +12,8 @@ import {
   Grid,
   Typography,
 } from "@mui/material";
-import { set } from "react-hook-form";
+import { useNavigate } from "react-router-dom";
+
 export default function Dropdown() {
   interface Car {
     id: number;
@@ -34,6 +35,7 @@ export default function Dropdown() {
   const [selectedCar, setSelectedCar] = useState<Car>();
   const [selectedCarType, setSelectedCarType] = useState<CarType>();
   const [selectedCarYear, setSelectedCarYear] = useState<CarYear>();
+  const navigate = useNavigate();
 
   useEffect(() => {
     axios
@@ -45,6 +47,7 @@ export default function Dropdown() {
         console.log(error);
       });
   }, []);
+
   return (
     <Box
       sx={{
@@ -202,6 +205,7 @@ export default function Dropdown() {
             </Select>
           </FormControl>
 
+          {/* Reset Button */}
           <Button
             color="primary"
             variant="contained"
@@ -220,6 +224,7 @@ export default function Dropdown() {
             Reset
           </Button>
 
+          {/* Go Button */}
           <Button
             disabled={!selectedCarYear}
             variant="contained"
@@ -233,13 +238,16 @@ export default function Dropdown() {
             onClick={(e) => {
               if (selectedCar == undefined) {
               }
-              console.log(
-                selectedCar?.id +
-                  " " +
-                  selectedCarType?.id +
-                  " " +
-                  selectedCarYear?.id
-              );
+              navigate(`/CategorySelect`, {
+                state: {
+                  carId: selectedCar?.id,
+                  typeId: selectedCarType?.id,
+                  yearId: selectedCarYear?.id,
+                  carName: selectedCar?.name,
+                  typename: selectedCarType?.type,
+                  yearname: selectedCarYear?.years,
+                },
+              });
             }}
           >
             Go
