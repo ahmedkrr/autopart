@@ -18,6 +18,7 @@ import ItemsFilterByCar from "./pages/Home/ItemsFilterByCar";
 import { NotAuthorized, NotFound } from "./NotAuthorized";
 import FilterCategoryCar from "./pages/Home/FilterCategoryCar";
 import CompanyProfileLookUps from "./pages/Home/CompanyProfileLookUps";
+import Register from "./pages/Login/Register";
 
 function App() {
   return (
@@ -36,8 +37,12 @@ function AppContent() {
       element: <Home />,
     },
     {
-      path: "Login",
+      path: "/Login",
       element: <Login />,
+    },
+    {
+      path: "/register",
+      element: <Register />,
     },
     {
       path: "/createcompany",
