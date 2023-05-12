@@ -24,6 +24,7 @@ import { useEffect, useState } from "react";
 import { API_ENDPOINT } from "../../../API";
 import axios from "axios";
 import AddSubCategory from "../../componants/AddSubCategory";
+import AddCarYearPopups from "../../componants/AddCarYearPopups";
 
 type Cars = {
   id: number;
@@ -49,11 +50,11 @@ export default function SubCategory() {
   const [selectedCar, setSelectedCar] = useState("");
   const [selectedcartype, setSelectedType] = useState("");
 
-  const [openAddCategoreyPopUp, AddCategoryPopUpToggle] = useToggle();
+  const [openAddYearPopUp, AddYearPopUpToggle] = useToggle();
 
   const handleAddCategory = () => {
     // Handle the update operation here
-    AddCategoryPopUpToggle();
+    AddYearPopUpToggle();
   };
 
   const fetchCars = async () => {
@@ -178,20 +179,30 @@ export default function SubCategory() {
       <Grid item xs={11}>
         <TableContainer component={Paper}>
           <Table>
-            <TableHead sx={{ background: "grey" }}>
+            <TableHead sx={{ background: "rgb(64,78,103)" }}>
               <TableRow>
-                <TableCell align="center">Id</TableCell>
-                <TableCell align="center">Type Id</TableCell>
-                <TableCell align="center">Years</TableCell>
-                <TableCell align="center">Delete</TableCell>
-                <TableCell align="center">Update</TableCell>
+                <TableCell align="center" sx={{ color: "white" }}>
+                  Id
+                </TableCell>
+                <TableCell align="center" sx={{ color: "white" }}>
+                  Type Id
+                </TableCell>
+                <TableCell align="center" sx={{ color: "white" }}>
+                  Years
+                </TableCell>
+                <TableCell align="center" sx={{ color: "white" }}>
+                  Delete
+                </TableCell>
+                <TableCell align="center" sx={{ color: "white" }}>
+                  Update
+                </TableCell>
               </TableRow>
             </TableHead>
 
             <TableBody>
               {years.map((year) => (
                 <TableRow key={year.id}>
-                  <TableCell align="center">{year.typeId}</TableCell>
+                  <TableCell align="center">{year.id}</TableCell>
                   <TableCell align="center">{year.typeId}</TableCell>
                   <TableCell align="center">{year.years}</TableCell>
 
@@ -240,11 +251,11 @@ export default function SubCategory() {
         </Fab>
       )}
 
-      {/* <AddSubCategory
-        open={openAddCategoreyPopUp}
-        togglePopUp={AddCategoryPopUpToggle}
-        categoryId={parseInt(selectedCategory)}
-      /> */}
+      <AddCarYearPopups
+        open={openAddYearPopUp}
+        togglePopUp={AddYearPopUpToggle}
+        typeId={parseInt(selectedcartype)}
+      />
     </Grid>
   );
 }

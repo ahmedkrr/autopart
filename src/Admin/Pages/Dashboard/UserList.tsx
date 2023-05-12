@@ -32,7 +32,7 @@ interface users {
   isAdmin: boolean;
   isDeactive: boolean;
   creatDate: string;
-  companyprofile: string | null;
+  companyProfile: string | null;
   companyProfileId: number | null;
 }
 
@@ -95,20 +95,44 @@ export default function UserList() {
         >
           <TableContainer component={Paper} sx={{ width: 1100 }}>
             <Table>
-              <TableHead sx={{ background: "grey" }}>
+              <TableHead sx={{ background: "rgb(64,78,103)" }}>
                 <TableRow>
-                  <TableCell align="center">id</TableCell>
-                  <TableCell align="center">name</TableCell>
-                  <TableCell align="center">email</TableCell>
-                  <TableCell align="center">phoneNumber</TableCell>
-                  <TableCell align="center">isCompanyOwner</TableCell>
-                  <TableCell align="center">isAdmin</TableCell>
-                  <TableCell align="center">isDeactive</TableCell>
-                  <TableCell align="center">creatDate</TableCell>
-                  <TableCell align="center">companyprofile</TableCell>
-                  <TableCell align="center">companyProfileId</TableCell>
-                  <TableCell align="center">Delete</TableCell>
-                  <TableCell align="center">Update</TableCell>
+                  <TableCell align="center" sx={{ color: "white" }}>
+                    id
+                  </TableCell>
+                  <TableCell align="center" sx={{ color: "white" }}>
+                    name
+                  </TableCell>
+                  <TableCell align="center" sx={{ color: "white" }}>
+                    email
+                  </TableCell>
+                  <TableCell align="center" sx={{ color: "white" }}>
+                    phoneNumber
+                  </TableCell>
+                  <TableCell align="center" sx={{ color: "white" }}>
+                    isCompanyOwner
+                  </TableCell>
+                  <TableCell align="center" sx={{ color: "white" }}>
+                    isAdmin
+                  </TableCell>
+                  <TableCell align="center" sx={{ color: "white" }}>
+                    isDeactive
+                  </TableCell>
+                  <TableCell align="center" sx={{ color: "white" }}>
+                    creatDate
+                  </TableCell>
+                  <TableCell align="center" sx={{ color: "white" }}>
+                    companyprofile
+                  </TableCell>
+                  <TableCell align="center" sx={{ color: "white" }}>
+                    companyProfileId
+                  </TableCell>
+                  <TableCell align="center" sx={{ color: "white" }}>
+                    Delete
+                  </TableCell>
+                  <TableCell align="center" sx={{ color: "white" }}>
+                    Update
+                  </TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
@@ -129,7 +153,7 @@ export default function UserList() {
                     </TableCell>
                     <TableCell align="center">{user.creatDate}</TableCell>
                     <TableCell align="center">
-                      {user.companyprofile || "-"}
+                      {user.companyProfile || "-"}
                     </TableCell>
                     <TableCell align="center">
                       {user.companyProfileId || "-"}

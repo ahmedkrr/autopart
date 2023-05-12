@@ -83,12 +83,20 @@ export default function CarList() {
       <Grid item xs={11}>
         <TableContainer component={Paper}>
           <Table>
-            <TableHead sx={{ background: "grey" }}>
+            <TableHead sx={{ background: "rgb(64,78,103)" }}>
               <TableRow>
-                <TableCell align="center">id</TableCell>
-                <TableCell align="center">Car Name</TableCell>
-                <TableCell align="center">Delete</TableCell>
-                <TableCell align="center">Update</TableCell>
+                <TableCell align="center" sx={{ color: "white" }}>
+                  id
+                </TableCell>
+                <TableCell align="center" sx={{ color: "white" }}>
+                  Car Name
+                </TableCell>
+                <TableCell align="center" sx={{ color: "white" }}>
+                  Delete
+                </TableCell>
+                <TableCell align="center" sx={{ color: "white" }}>
+                  Update
+                </TableCell>
               </TableRow>
             </TableHead>
 

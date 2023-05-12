@@ -24,6 +24,7 @@ import { useEffect, useState } from "react";
 import { API_ENDPOINT } from "../../../API";
 import axios from "axios";
 import AddSubCategory from "../../componants/AddSubCategory";
+import AddCarTypePopUps from "../../componants/AddCarTypePopUps";
 
 type Cars = {
   id: number;
@@ -40,11 +41,11 @@ export default function TypeCarList() {
   const [selectedCar, setSelectedCar] = useState("");
   const [cartypes, setcartype] = useState<CarTypes[]>([]);
 
-  const [openAddCategoreyPopUp, AddCategoryPopUpToggle] = useToggle();
+  const [openAddTypePopUp, AddTypePopUpToggle] = useToggle();
 
   const handleAddCategory = () => {
     // Handle the update operation here
-    AddCategoryPopUpToggle();
+    AddTypePopUpToggle();
   };
 
   const fetchData = async () => {
@@ -75,7 +76,7 @@ export default function TypeCarList() {
   }, []);
   useEffect(() => {
     fetchCarTypes();
-  }, [selectedCar, openAddCategoreyPopUp]);
+  }, [selectedCar, openAddTypePopUp]);
 
   //   const handleDelete = async (subId: number) => {
   //     try {
@@ -128,13 +129,23 @@ export default function TypeCarList() {
       <Grid item xs={11}>
         <TableContainer component={Paper}>
           <Table>
-            <TableHead sx={{ background: "grey" }}>
+            <TableHead sx={{ background: "rgb(64,78,103)" }}>
               <TableRow>
-                <TableCell align="center">id</TableCell>
-                <TableCell align="center">Car Name Id</TableCell>
-                <TableCell align="center">Car Type Name</TableCell>
-                <TableCell align="center">Delete</TableCell>
-                <TableCell align="center">Update</TableCell>
+                <TableCell align="center" sx={{ color: "white" }}>
+                  id
+                </TableCell>
+                <TableCell align="center" sx={{ color: "white" }}>
+                  Car Name Id
+                </TableCell>
+                <TableCell align="center" sx={{ color: "white" }}>
+                  Car Type Name
+                </TableCell>
+                <TableCell align="center" sx={{ color: "white" }}>
+                  Delete
+                </TableCell>
+                <TableCell align="center" sx={{ color: "white" }}>
+                  Update
+                </TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
@@ -190,11 +201,11 @@ export default function TypeCarList() {
         </Fab>
       )}
 
-      {/* <AddSubCategory
-        open={openAddCategoreyPopUp}
-        togglePopUp={AddCategoryPopUpToggle}
-        categoryId={parseInt(selectedCategory)}
-      /> */}
+      <AddCarTypePopUps
+        open={openAddTypePopUp}
+        togglePopUp={AddTypePopUpToggle}
+        type={parseInt(selectedCar)}
+      />
     </Grid>
   );
 }

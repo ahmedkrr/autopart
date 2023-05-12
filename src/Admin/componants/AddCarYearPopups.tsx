@@ -12,38 +12,41 @@ import { Button } from "@mui/material";
 import axios from "axios";
 import { API_ENDPOINT } from "../../API";
 import { useForm } from "react-hook-form";
-interface Addcategory {
+
+interface AddCarYear {
   open: boolean;
   togglePopUp: () => void;
+  typeId: number;
 }
 
-type CarAdd = {
-  CarName: string;
-  CarType: string;
-  CarYear: string;
+type TypeAdd = {
+  caryear: string;
 };
-export default function AddCarPopups(props: Addcategory) {
+export default function AddCarYearPopups(props: AddCarYear) {
   const { open, togglePopUp } = props;
 
   const {
     handleSubmit,
     register,
-    formState: { errors },
     reset,
-  } = useForm<CarAdd>();
+    formState: { errors },
+  } = useForm<TypeAdd>();
 
-  const onSubmit = async (data: CarAdd) => {
-    // if(photofile!=null && categoryname!= null)
+  const onSubmit = async (data: TypeAdd) => {
     try {
       console.log(data);
-      const response = await axios.post(`${API_ENDPOINT}admin/addCar`, {
-        ...data,
-        CarYear: new Date(parseInt(data.CarYear), 1, 1),
-      });
+      const response = await axios.post(
+        `${API_ENDPOINT}admin/addcaryear/${props.typeId}`,
+        {
+          ...data,
+          caryear: new Date(parseInt(data.caryear), 1, 1),
+        }
+      );
+
       console.log(response.data);
       if (response.status == 200) {
         togglePopUp();
-        alert(`${data.CarName} added successfully!`);
+        alert(`${data.caryear} added successfully!`);
       }
     } catch (error) {
       console.log(error);
@@ -61,39 +64,24 @@ export default function AddCarPopups(props: Addcategory) {
     >
       <Dialog open={open} fullWidth maxWidth="sm">
         <DialogTitle align="center" fontSize={30}>
-          Add Car
+          Add Car Type
         </DialogTitle>
         <Divider />
+
         <form onSubmit={handleSubmit(onSubmit)}>
           <DialogContent>
             <Grid container columnSpacing={3} justifyContent="center">
-              <Grid item>
-                <TextField
-                  type="text"
-                  label="Name"
-                  required
-                  {...register("CarName")}
-                />
-              </Grid>
-              <Grid item>
-                <TextField
-                  type="text"
-                  label="Type"
-                  {...register("CarType")}
-                  required
-                />
-              </Grid>
               <Grid item mt="10px">
                 <TextField
                   type="text"
                   label="Year"
                   required
-                  {...register("CarYear", {
+                  {...register("caryear", {
                     validate: (value) =>
                       /^\d{4}$/.test(value) || "Year must be a 4-digit number",
                   })}
-                  error={Boolean(errors.CarYear)}
-                  helperText={errors.CarYear?.message}
+                  error={Boolean(errors.caryear)}
+                  helperText={errors.caryear?.message}
                 />
               </Grid>
             </Grid>

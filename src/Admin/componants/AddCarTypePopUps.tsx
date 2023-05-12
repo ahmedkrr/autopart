@@ -12,38 +12,32 @@ import { Button } from "@mui/material";
 import axios from "axios";
 import { API_ENDPOINT } from "../../API";
 import { useForm } from "react-hook-form";
-interface Addcategory {
+
+interface AddCarType {
   open: boolean;
   togglePopUp: () => void;
+  type: number;
 }
 
-type CarAdd = {
-  CarName: string;
+type TypeAdd = {
   CarType: string;
-  CarYear: string;
 };
-export default function AddCarPopups(props: Addcategory) {
+export default function AddCarTypePopUps(props: AddCarType) {
   const { open, togglePopUp } = props;
 
-  const {
-    handleSubmit,
-    register,
-    formState: { errors },
-    reset,
-  } = useForm<CarAdd>();
+  const { handleSubmit, register, reset } = useForm<TypeAdd>();
 
-  const onSubmit = async (data: CarAdd) => {
-    // if(photofile!=null && categoryname!= null)
+  const onSubmit = async (data: TypeAdd) => {
     try {
       console.log(data);
-      const response = await axios.post(`${API_ENDPOINT}admin/addCar`, {
-        ...data,
-        CarYear: new Date(parseInt(data.CarYear), 1, 1),
-      });
+      const response = await axios.post(
+        `${API_ENDPOINT}admin/addCarType/${props.type}`,
+        data
+      );
       console.log(response.data);
       if (response.status == 200) {
         togglePopUp();
-        alert(`${data.CarName} added successfully!`);
+        alert(`${data.CarType} added successfully!`);
       }
     } catch (error) {
       console.log(error);
@@ -61,39 +55,19 @@ export default function AddCarPopups(props: Addcategory) {
     >
       <Dialog open={open} fullWidth maxWidth="sm">
         <DialogTitle align="center" fontSize={30}>
-          Add Car
+          Add Car Type
         </DialogTitle>
         <Divider />
+
         <form onSubmit={handleSubmit(onSubmit)}>
           <DialogContent>
             <Grid container columnSpacing={3} justifyContent="center">
               <Grid item>
                 <TextField
                   type="text"
-                  label="Name"
-                  required
-                  {...register("CarName")}
-                />
-              </Grid>
-              <Grid item>
-                <TextField
-                  type="text"
                   label="Type"
                   {...register("CarType")}
                   required
-                />
-              </Grid>
-              <Grid item mt="10px">
-                <TextField
-                  type="text"
-                  label="Year"
-                  required
-                  {...register("CarYear", {
-                    validate: (value) =>
-                      /^\d{4}$/.test(value) || "Year must be a 4-digit number",
-                  })}
-                  error={Boolean(errors.CarYear)}
-                  helperText={errors.CarYear?.message}
                 />
               </Grid>
             </Grid>
