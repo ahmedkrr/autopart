@@ -39,21 +39,21 @@ interface users {
 export default function UserList() {
   const [usersList, setUsersList] = useState<users[]>([]);
   const [openEditUserPopUp, editUserPopUpToggle] = useToggle();
+  const [selectedUser, setSelectedUser] = useState(0);
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await axios.get(`${API_ENDPOINT}admin/GetAllUsers`);
-        if (response.data) {
-          setUsersList(response.data);
-        }
-      } catch (error) {
-        console.log(error);
+  const fetchData = async () => {
+    try {
+      const response = await axios.get(`${API_ENDPOINT}admin/GetAllUsers`);
+      if (response.data) {
+        setUsersList(response.data);
       }
-    };
-
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  useEffect(() => {
     fetchData();
-  }, []);
+  }, [openEditUserPopUp]);
 
   const handleDelete = async (userId: number) => {
     const confirmed = window.confirm(
@@ -65,7 +65,7 @@ export default function UserList() {
           `${API_ENDPOINT}admin/deleteuser/${userId}`
         );
         console.log(response.data);
-        window.location.reload();
+        fetchData();
       } catch (error) {
         console.log(error);
       }
@@ -73,7 +73,7 @@ export default function UserList() {
   };
 
   const handleUpdate = (userId: number) => {
-    // Handle the update operation here
+    setSelectedUser(userId);
     editUserPopUpToggle();
   };
 
@@ -135,6 +135,7 @@ export default function UserList() {
                   </TableCell>
                 </TableRow>
               </TableHead>
+
               <TableBody>
                 {usersList.map((user) => (
                   <TableRow key={user.id}>
@@ -160,6 +161,7 @@ export default function UserList() {
                     </TableCell>
                     <TableCell>
                       <Button
+                        disabled={user.id == 1}
                         variant="outlined"
                         startIcon={<DeleteIcon />}
                         style={{ backgroundColor: "red", color: "white" }}
@@ -187,6 +189,7 @@ export default function UserList() {
         </Grid>
 
         <EdituserPopups
+          userId={selectedUser}
           open={openEditUserPopUp}
           togglePopUp={editUserPopUpToggle}
         />

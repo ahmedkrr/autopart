@@ -2,7 +2,6 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import { AiFillEdit } from "react-icons/ai";
 import AddIcon from "@mui/icons-material/Add";
 import { useToggle } from "../../../common/hooks/useToggle";
-
 import {
   Grid,
   Table,
@@ -23,8 +22,8 @@ import {
 import { useEffect, useState } from "react";
 import { API_ENDPOINT } from "../../../API";
 import axios from "axios";
-import AddSubCategory from "../../componants/AddSubCategory";
 import AddCarYearPopups from "../../componants/AddCarYearPopups";
+import EditCArYearPopups from "../../componants/EditCarYearPopUps";
 
 type Cars = {
   id: number;
@@ -49,11 +48,11 @@ export default function SubCategory() {
 
   const [selectedCar, setSelectedCar] = useState("");
   const [selectedcartype, setSelectedType] = useState("");
-
+  const [selectedYear, setSelectedYear] = useState(0);
   const [openAddYearPopUp, AddYearPopUpToggle] = useToggle();
+  const [openEditYearPopUp, EditYearPopUpToggle] = useToggle();
 
   const handleAddCategory = () => {
-    // Handle the update operation here
     AddYearPopUpToggle();
   };
 
@@ -104,28 +103,33 @@ export default function SubCategory() {
 
   useEffect(() => {
     fetchTypeYears();
-  }, [selectedcartype]);
+  }, [selectedcartype, openAddYearPopUp, openEditYearPopUp]);
 
-  //   const handleDelete = async (subId: number) => {
-  //     try {
-  //       const confirmed = window.confirm(
-  //         ` Are you sure you want to delete this Category ID = ${subId} ?`
-  //       );
+  const handleDelete = async (yearId: number) => {
+    try {
+      const confirmed = window.confirm(
+        ` Are you sure you want to delete this Year ID = ${yearId} ?`
+      );
 
-  //       if (confirmed) {
-  //         const response = await axios.delete(
-  //           `${API_ENDPOINT}admin/deletesubcategory/${subId}`
-  //         );
+      if (confirmed) {
+        const response = await axios.delete(
+          `${API_ENDPOINT}admin/deleteyear/${yearId}`
+        );
 
-  //         if (response.data.success) {
-  //           alert(`Category Deleted successfully! ${response.data.categoryName}`);
-  //           fetchSubCategory();
-  //         }
-  //       }
-  //     } catch (error) {
-  //       console.log(error);
-  //     }
-  //   };
+        if (response.status == 200) {
+          alert(`Year Deleted successfully! `);
+          fetchTypeYears();
+        }
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const handleUpdate = (yearId: number) => {
+    setSelectedYear(yearId);
+    EditYearPopUpToggle();
+  };
 
   return (
     <Grid container justifyContent="center">
@@ -211,9 +215,7 @@ export default function SubCategory() {
                       variant="outlined"
                       startIcon={<DeleteIcon />}
                       style={{ backgroundColor: "red", color: "white" }}
-                      //   onClick={() =>
-                      //     handleDelete(subcategorylist.subCategoryId)
-                      //   }
+                      onClick={() => handleDelete(year.id)}
                     >
                       Delete
                     </Button>
@@ -224,7 +226,7 @@ export default function SubCategory() {
                       style={{ backgroundColor: "green", color: "white" }}
                       variant="outlined"
                       startIcon={<AiFillEdit />}
-                      // onClick={() => handleUpdate(user.id)}
+                      onClick={() => handleUpdate(year.id)}
                     >
                       Edit
                     </Button>
@@ -251,11 +253,21 @@ export default function SubCategory() {
         </Fab>
       )}
 
-      <AddCarYearPopups
-        open={openAddYearPopUp}
-        togglePopUp={AddYearPopUpToggle}
-        typeId={parseInt(selectedcartype)}
-      />
+      {openAddYearPopUp && (
+        <AddCarYearPopups
+          open={openAddYearPopUp}
+          togglePopUp={AddYearPopUpToggle}
+          typeId={parseInt(selectedcartype)}
+        />
+      )}
+
+      {openEditYearPopUp && (
+        <EditCArYearPopups
+          open={openEditYearPopUp}
+          togglePopUp={EditYearPopUpToggle}
+          yearId={selectedYear}
+        />
+      )}
     </Grid>
   );
 }

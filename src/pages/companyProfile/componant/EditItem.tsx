@@ -8,12 +8,8 @@ import {
   DialogTitle,
   Button,
   Divider,
-  Typography,
-  Alert,
 } from "@mui/material";
-import { useForm } from "react-hook-form";
-import { Dropdownlistitem, DropdownlitstCategory } from "./Dropdownlistitem";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { API_ENDPOINT } from "../../../API";
 import axios from "axios";
 
@@ -21,78 +17,50 @@ type AddItms = {
   open: boolean;
   togglePopUp: () => void;
   Id: number;
+  handleupdate: () => void;
 };
 
-type AddItemForm = {
-  itemname: string;
-  itemprice: number;
-  description: string;
-  carName: number;
-};
 export default function EditItem(props: AddItms) {
   const { open, togglePopUp } = props;
-  const { handleSubmit, register, reset } = useForm<AddItemForm>();
-  const [photoname, setphotoname] = useState("");
-  const [photofile, setphotofile] = useState<File | null>(null);
-  const [carName, setCarName] = useState(0);
-  const [carType, setCarType] = useState(0);
-  const [carYear, setCarYear] = useState(0);
+  const [itemname, setitemname] = useState("");
+  const [itemprice, setitemprice] = useState(0);
+  const [discription, setdescriptions] = useState("");
 
-  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    if (event.target.files) {
-      setphotofile(event.target.files[0]);
-      console.log(event.target.files[0]);
+  const getinfoItem = async () => {
+    const response = await axios.get(
+      `${API_ENDPOINT}item/Getiteminfo/${props.Id}`
+    );
+    if (response.status == 200) {
+      setitemname(response.data?.name);
+      setitemprice(response.data?.price);
+      setdescriptions(response.data?.discription);
     }
   };
-  const onSubmit = async (data: AddItemForm) => {
-    const formData = new FormData();
-    formData.append("file", photofile != null ? photofile : "");
-    formData.append("ItemName", data.itemname);
-    formData.append("Discription", data.description);
-    formData.append("Price", `${data.itemprice}`);
-    formData.append("CarModelId", `${carName == 0 ? "" : carName}`);
-    formData.append("CartTypeId", `${carType == 0 ? "" : carType}`);
-    formData.append("YearId", `${carYear == 0 ? "" : carYear}`);
-    formData.append("SubCategoryId", `${subcategory}`);
+  useEffect(() => {
+    getinfoItem();
+  }, [props.Id]);
 
-    console.log(formData);
+  const onSubmit = async () => {
+    const formData = new FormData();
+    formData.append("Name", itemname);
+    formData.append("Discription", discription);
+    formData.append("Price", `${itemprice}`);
 
     try {
-      const response = await axios.post(
-        `${API_ENDPOINT}item/AddItem`,
-        formData,
-        {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
-          },
-        }
+      const response = await axios.put(
+        `${API_ENDPOINT}item/UpdateItem/${props.Id}`,
+        formData
       );
-      if (response.data.success) {
-        togglePopUp();
-        setphotofile(null);
-        setphotoname("");
-        reset();
-        <Alert variant="outlined" severity="success">
-          The Item Added Successfully
-        </Alert>;
-      }
 
-      console.log(localStorage.getItem("token"));
+      if (response.status == 200) {
+        alert("Updated Success");
+        togglePopUp();
+        props.handleupdate();
+      }
     } catch (error) {
       console.log(error);
     }
   };
-
-  function handleCarSelection(name: number, type: number, year: number) {
-    setCarName(name);
-    setCarType(type);
-    setCarYear(year);
-  }
-  const [subcategory, setsubcategory] = useState(0);
-
-  function handelCategorySelection(subcategory: number) {
-    setsubcategory(subcategory);
-  }
 
   return (
     <Box
@@ -110,119 +78,77 @@ export default function EditItem(props: AddItms) {
         </DialogTitle>
         <Divider />
 
-        <form onSubmit={handleSubmit(onSubmit)}>
-          <DialogContent>
-            <Grid container columnSpacing={3} justifyContent="center">
-              <Grid item>
-                <TextField
-                  {...register("itemname")}
-                  type="text"
-                  label="Item Name"
-                  required
-                />
-              </Grid>
-
-              <Grid item>
-                <TextField
-                  type="number"
-                  label="Price"
-                  {...register("itemprice")}
-                  required
-                />
-              </Grid>
-
-              <Grid item container xs={10}>
-                <DropdownlitstCategory
-                  handelCategorySelection={handelCategorySelection}
-                />
-              </Grid>
-
-              <Grid item xs={10}>
-                <Dropdownlistitem handleCarSelection={handleCarSelection} />
-              </Grid>
-
-              <Grid
-                container
-                item
-                mt="10px"
-                xs={12}
-                justifyContent="center"
-                alignItems="center"
-                columnSpacing={3}
-              >
-                <Grid item mr="10px">
-                  <Button variant="contained" component="label">
-                    Upload Photo
-                    <input
-                      required
-                      hidden
-                      accept="image/*"
-                      multiple
-                      type="file"
-                      onChange={(event) => {
-                        if (
-                          event.target instanceof HTMLInputElement &&
-                          event.target.files != null
-                        ) {
-                          handleFileChange(event);
-                          const fileName = event.target.files[0].name;
-                          const label =
-                            document.querySelector(
-                              "label[for='upload-photo']"
-                            ) ?? document.createElement("label");
-                          label.textContent = fileName;
-                          setphotoname(
-                            typeof fileName != undefined ? fileName : ""
-                          );
-                        }
-                      }}
-                    />
-                  </Button>
-                </Grid>
-
-                <Grid item>
-                  <Typography variant="body2" sx={{ color: "blue" }}>
-                    {photoname}
-                  </Typography>
-                </Grid>
-              </Grid>
-
-              <Grid item xs={10} mt="10px">
-                <TextField
-                  fullWidth
-                  label="Description"
-                  {...register("description")}
-                  multiline
-                  rows={3}
-                  required
-                  style={{ height: "90px" }}
-                />
-              </Grid>
+        <DialogContent>
+          <Grid container columnSpacing={6} justifyContent="center">
+            <Grid item>
+              <TextField
+                value={itemname}
+                type="text"
+                label="Item Name"
+                required
+                onChange={(event) => {
+                  setitemname(event.target.value);
+                }}
+              />
             </Grid>
-          </DialogContent>
 
-          <DialogActions>
-            <Button
-              variant="outlined"
-              onClick={() => {
-                togglePopUp();
-                setphotofile(null);
-                setphotoname("");
-                reset();
-              }}
-            >
-              Cancle
-            </Button>
+            <Grid item>
+              <TextField
+                value={itemprice}
+                type="number"
+                label="Price"
+                required
+                onChange={(event) => {
+                  setitemprice(parseInt(event.target.value));
+                }}
+              />
+            </Grid>
 
-            <Button
-              variant="contained"
-              type="submit"
-              sx={{ background: "green" }}
-            >
-              Edit Item
-            </Button>
-          </DialogActions>
-        </form>
+            <Grid
+              container
+              item
+              mt="10px"
+              xs={12}
+              justifyContent="center"
+              alignItems="center"
+              columnSpacing={3}
+            ></Grid>
+
+            <Grid item xs={10} mt="10px">
+              <TextField
+                value={discription}
+                fullWidth
+                label="Description"
+                multiline
+                rows={3}
+                required
+                style={{ height: "90px" }}
+                onChange={(e) => {
+                  setdescriptions(e.target.value);
+                }}
+              />
+            </Grid>
+          </Grid>
+        </DialogContent>
+
+        <DialogActions>
+          <Button
+            variant="outlined"
+            onClick={() => {
+              togglePopUp();
+            }}
+          >
+            Cancle
+          </Button>
+
+          <Button
+            variant="contained"
+            sx={{ background: "green" }}
+            onClick={onSubmit}
+          >
+            Edit Item
+          </Button>
+        </DialogActions>
       </Dialog>
     </Box>
   );

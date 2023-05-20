@@ -10,8 +10,6 @@ import CreateCompany from "./pages/companyProfile/CreateCompany";
 import Companyprofile from "./pages/companyProfile/Companyprofile";
 import Dashboard from "./Admin/Pages/Dashboard/Dashboard";
 import AdminLogin from "./Admin/Pages/AdminLogin";
-import { jwtdecoder } from "./Jwtdecode";
-import { useEffect, useState } from "react";
 import { isUserAdmin } from "./common/utils/helpers";
 import ItemsFilter from "./pages/Home/ItemsFilter";
 import ItemsFilterByCar from "./pages/Home/ItemsFilterByCar";
@@ -19,6 +17,8 @@ import { NotAuthorized, NotFound } from "./NotAuthorized";
 import FilterCategoryCar from "./pages/Home/FilterCategoryCar";
 import CompanyProfileLookUps from "./pages/Home/CompanyProfileLookUps";
 import Register from "./pages/Login/Register";
+import ResetPassword from "./pages/Login/ResetPassword";
+import NewPassword from "./pages/Login/NewPAssword";
 
 function App() {
   return (
@@ -43,6 +43,14 @@ function AppContent() {
     {
       path: "/register",
       element: <Register />,
+    },
+    {
+      path: "/resetpassword",
+      element: <ResetPassword />,
+    },
+    {
+      path: "/reset-password/:guid",
+      element: <NewPassword />,
     },
     {
       path: "/createcompany",

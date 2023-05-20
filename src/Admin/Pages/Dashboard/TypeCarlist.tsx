@@ -23,8 +23,8 @@ import {
 import { useEffect, useState } from "react";
 import { API_ENDPOINT } from "../../../API";
 import axios from "axios";
-import AddSubCategory from "../../componants/AddSubCategory";
 import AddCarTypePopUps from "../../componants/AddCarTypePopUps";
+import EditTypePopUps from "../../componants/EditTypePopUps";
 
 type Cars = {
   id: number;
@@ -41,10 +41,11 @@ export default function TypeCarList() {
   const [selectedCar, setSelectedCar] = useState("");
   const [cartypes, setcartype] = useState<CarTypes[]>([]);
 
+  const [selectedType, setSelectedType] = useState(0);
   const [openAddTypePopUp, AddTypePopUpToggle] = useToggle();
+  const [openEditTypePopUp, EditTypePopUpToggle] = useToggle();
 
   const handleAddCategory = () => {
-    // Handle the update operation here
     AddTypePopUpToggle();
   };
 
@@ -76,28 +77,33 @@ export default function TypeCarList() {
   }, []);
   useEffect(() => {
     fetchCarTypes();
-  }, [selectedCar, openAddTypePopUp]);
+  }, [selectedCar, openAddTypePopUp, openEditTypePopUp]);
 
-  //   const handleDelete = async (subId: number) => {
-  //     try {
-  //       const confirmed = window.confirm(
-  //         ` Are you sure you want to delete this Category ID = ${subId} ?`
-  //       );
+  const handleUpdate = (id: number) => {
+    setSelectedType(id);
+    EditTypePopUpToggle();
+  };
 
-  //       if (confirmed) {
-  //         const response = await axios.delete(
-  //           `${API_ENDPOINT}admin/deletesubcategory/${subId}`
-  //         );
+  const handleDelete = async (TypeId: number) => {
+    try {
+      const confirmed = window.confirm(
+        ` Are you sure you want to delete this CarType ID = ${TypeId} ?`
+      );
 
-  //         if (response.data.success) {
-  //           alert(`Category Deleted successfully! ${response.data.categoryName}`);
-  //           fetchSubCategory();
-  //         }
-  //       }
-  //     } catch (error) {
-  //       console.log(error);
-  //     }
-  //   };
+      if (confirmed) {
+        const response = await axios.delete(
+          `${API_ENDPOINT}admin/deleteType/${TypeId}`
+        );
+
+        if (response.status == 200) {
+          alert(`Type & Years related Deleted successfully! `);
+          fetchCarTypes();
+        }
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   return (
     <Grid container justifyContent="center">
@@ -161,9 +167,7 @@ export default function TypeCarList() {
                       variant="outlined"
                       startIcon={<DeleteIcon />}
                       style={{ backgroundColor: "red", color: "white" }}
-                      //   onClick={() =>
-                      //     handleDelete(subcategorylist.subCategoryId)
-                      //   }
+                      onClick={() => handleDelete(cartype.id)}
                     >
                       Delete
                     </Button>
@@ -174,7 +178,9 @@ export default function TypeCarList() {
                       style={{ backgroundColor: "green", color: "white" }}
                       variant="outlined"
                       startIcon={<AiFillEdit />}
-                      // onClick={() => handleUpdate(user.id)}
+                      onClick={() => {
+                        handleUpdate(cartype.id);
+                      }}
                     >
                       Edit
                     </Button>
@@ -201,11 +207,21 @@ export default function TypeCarList() {
         </Fab>
       )}
 
-      <AddCarTypePopUps
-        open={openAddTypePopUp}
-        togglePopUp={AddTypePopUpToggle}
-        type={parseInt(selectedCar)}
-      />
+      {openAddTypePopUp && (
+        <AddCarTypePopUps
+          open={openAddTypePopUp}
+          togglePopUp={AddTypePopUpToggle}
+          type={parseInt(selectedCar)}
+        />
+      )}
+
+      {openEditTypePopUp && (
+        <EditTypePopUps
+          open={openEditTypePopUp}
+          togglePopUp={EditTypePopUpToggle}
+          typeId={selectedType}
+        />
+      )}
     </Grid>
   );
 }

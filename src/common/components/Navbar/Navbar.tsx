@@ -105,6 +105,7 @@ export function Navbar() {
   const handleLogout = () => {
     localStorage.removeItem("token");
     setAnchorElUser(null);
+    navigate("/");
   };
 
   return (

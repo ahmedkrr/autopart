@@ -2,11 +2,7 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import { AiFillEdit } from "react-icons/ai";
 import AddIcon from "@mui/icons-material/Add";
 import { useToggle } from "../../../common/hooks/useToggle";
-
 import {
-  Box,
-  DialogActions,
-  DialogContent,
   Grid,
   Table,
   TableContainer,
@@ -22,8 +18,8 @@ import {
 import { useEffect, useState } from "react";
 import { API_ENDPOINT } from "../../../API";
 import axios from "axios";
-import AddCategory from "../../componants/AddCategory";
 import AddCarPopups from "../../componants/AddCarPopups";
+import EditCarPopUps from "../../componants/EditCarPopUps";
 
 type Cars = {
   id: number;
@@ -32,6 +28,9 @@ type Cars = {
 export default function CarList() {
   const [cars, setCars] = useState<Cars[]>([]);
   const [openAddCarPopUp, AddCarPopUpToggle] = useToggle();
+  const [openEditCarPopup, EditCarPopUpToggle] = useToggle();
+
+  const [selectedCar, setSelectedCar] = useState(0);
 
   const fetchData = async () => {
     try {
@@ -46,9 +45,14 @@ export default function CarList() {
 
   useEffect(() => {
     fetchData();
-  }, []);
+  }, [openEditCarPopup, openAddCarPopUp]);
   const handleAddCategory = () => {
     AddCarPopUpToggle();
+  };
+
+  const handleUpdate = (userId: number) => {
+    setSelectedCar(userId);
+    EditCarPopUpToggle();
   };
 
   const handleDelete = async (id: number) => {
@@ -123,7 +127,7 @@ export default function CarList() {
                       style={{ backgroundColor: "green", color: "white" }}
                       variant="outlined"
                       startIcon={<AiFillEdit />}
-                      // onClick={() => handleUpdate(user.id)}
+                      onClick={() => handleUpdate(car.id)}
                     >
                       Edit
                     </Button>
@@ -149,6 +153,13 @@ export default function CarList() {
       </Fab>
 
       <AddCarPopups open={openAddCarPopUp} togglePopUp={AddCarPopUpToggle} />
+      {openEditCarPopup && (
+        <EditCarPopUps
+          open={openEditCarPopup}
+          togglePopUp={EditCarPopUpToggle}
+          carId={selectedCar}
+        />
+      )}
     </Grid>
   );
 }

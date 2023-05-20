@@ -29,23 +29,33 @@ type ItemsForm = {
 type CarditemProps = {
   item: ItemsForm;
   handleDelete: (id: number) => void;
+  handleupdate: () => void;
 };
 
-export default function Carditem({ item, handleDelete }: CarditemProps) {
+export default function Carditem({
+  item,
+  handleDelete,
+  handleupdate,
+}: CarditemProps) {
   const [showMore, setShowMore] = useState(false);
-  const [openAddCategoreyPopUp, AddCategoryPopUpToggle] = useToggle();
+  const [editItemPopUp, EditItemPopUpToggle] = useToggle();
   const [editItemId, setEditItemId] = useState(0);
   return (
     <>
       <Card sx={{ maxWidth: 345 }}>
         <CardMedia
-          sx={{ height: 140 }}
+          sx={{ height: 160 }}
           image={`data:image/jpeg;base64,${item?.imageData}`}
           title="Item Photo"
         />
 
         <CardContent>
-          <Typography gutterBottom variant="h5" textAlign="center">
+          <Typography
+            gutterBottom
+            variant="h5"
+            textAlign="center"
+            height="120px"
+          >
             {item?.name}
           </Typography>
 
@@ -79,7 +89,8 @@ export default function Carditem({ item, handleDelete }: CarditemProps) {
             //   startIcon={<AiFillEdit />}
             onClick={() => {
               setEditItemId(item.id);
-              AddCategoryPopUpToggle();
+              console.log(item.id);
+              EditItemPopUpToggle();
             }}
           >
             Edit
@@ -87,13 +98,14 @@ export default function Carditem({ item, handleDelete }: CarditemProps) {
         </CardActions>
       </Card>
 
-      {openAddCategoreyPopUp ? (
+      {editItemPopUp && (
         <EditItem
-          open={openAddCategoreyPopUp}
-          togglePopUp={AddCategoryPopUpToggle}
+          open={editItemPopUp}
+          togglePopUp={EditItemPopUpToggle}
           Id={editItemId}
+          handleupdate={handleupdate}
         />
-      ) : null}
+      )}
     </>
   );
 }

@@ -8,9 +8,7 @@ import {
   DialogTitle,
   Button,
   Divider,
-  TextareaAutosize,
   Typography,
-  Alert,
 } from "@mui/material";
 import { useForm } from "react-hook-form";
 import { Dropdownlistitem, DropdownlitstCategory } from "./Dropdownlistitem";
@@ -69,9 +67,7 @@ export default function Additem(props: AddItms) {
         setphotofile(null);
         setphotoname("");
         reset();
-        <Alert variant="outlined" severity="success">
-          The Item Added Successfully
-        </Alert>;
+        alert("Item Added Success");
       }
 
       console.log(localStorage.getItem("token"));

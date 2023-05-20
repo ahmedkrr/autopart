@@ -33,13 +33,18 @@ export default function CardLookUps({ item }: CarditemProps) {
     <>
       <Card sx={{ maxWidth: 345 }}>
         <CardMedia
-          sx={{ height: 140 }}
+          sx={{ height: 180 }}
           image={`data:image/jpeg;base64,${item?.imageData}`}
           title="Item Photo"
         />
 
         <CardContent>
-          <Typography gutterBottom variant="h5" textAlign="center">
+          <Typography
+            gutterBottom
+            variant="h5"
+            textAlign="center"
+            height="130px"
+          >
             {item?.name}
           </Typography>
 

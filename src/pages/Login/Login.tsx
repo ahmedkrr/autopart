@@ -15,25 +15,29 @@ export function Login() {
   const navigate = useNavigate();
   const [messagefaield, setErrormessage] = useState("");
 
-  const {
-    register,
-    control,
-    reset,
-    handleSubmit,
-    formState: { errors },
-  } = useForm<FormSignIn>();
+  const { control, handleSubmit } = useForm<FormSignIn>();
 
   const onSubmit = async (data: FormSignIn) => {
-    try {
-      const response = await axios.post(`${API_ENDPOINT}Account/login`, data);
-      console.log(response);
-      if (response.status == 200) {
-        localStorage.setItem("token", response.data.message);
-        navigate("/");
-      }
-    } catch (error) {
-      setErrormessage("Email or Password Wrong");
-    }
+    axios
+      .post(`${API_ENDPOINT}Account/login`, data)
+      .then((response) => {
+        console.log(response);
+        if (response.status === 200) {
+          localStorage.setItem("token", response.data.message);
+          navigate("/");
+        }
+      })
+      .catch((error) => {
+        if (
+          error.response &&
+          error.response.data &&
+          error.response.data.message
+        ) {
+          const errorMessage = error.response.data.message;
+          setErrormessage(errorMessage);
+          console.log(errorMessage);
+        }
+      });
   };
 
   return (
@@ -94,17 +98,29 @@ export function Login() {
               );
             }}
           />
+          <Grid>
+            <Button
+              sx={{ ml: "170px" }}
+              size="small"
+              onClick={() => {
+                navigate("/resetpassword");
+              }}
+            >
+              Forget Password
+            </Button>
+          </Grid>
+
           <Typography variant="h6" color={"error"} mt={1}>
             {messagefaield}
           </Typography>
 
-          <Box mt={2}>
-            <Button variant="contained" type="submit">
+          <Box mb={1}>
+            <Button variant="contained" type="submit" sx={{ width: "130px" }}>
               Login
             </Button>
           </Box>
 
-          <Box mt={2}>
+          <Box>
             <Button
               onClick={() => {
                 navigate("/register");

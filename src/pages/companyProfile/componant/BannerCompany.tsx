@@ -6,7 +6,6 @@ import {
   Skeleton,
   IconButton,
   Typography,
-  Fab,
 } from "@mui/material";
 import axios from "axios";
 import { useEffect, useState } from "react";
@@ -14,9 +13,6 @@ import { API_ENDPOINT } from "../../../API";
 import defaultbackground from "../../../static/defaultbackground.jpg";
 import { companyowner } from "../../../common/utils/helpers";
 import EditIcon from "@mui/icons-material/Edit";
-import AddIcon from "@mui/icons-material/Add";
-import { useToggle } from "../../../common/hooks/useToggle";
-import Additem from "./Additem";
 
 type CompanyInfo = {
   id: number;
@@ -33,7 +29,6 @@ export default function BannerCompany() {
   const comapnyId = companyowner();
   const [companyinfo, setcompanyinfo] = useState<CompanyInfo>();
   const [showEdit, setShowEdit] = useState(false);
-  const [openAddCategoreyPopUp, AddCategoryPopUpToggle] = useToggle();
 
   const fetchData = async () => {
     try {
@@ -109,10 +104,7 @@ export default function BannerCompany() {
   const handleMouseLeave = () => {
     setShowEdit(false);
   };
-  const handleAddItem = () => {
-    // Handle the update operation here
-    AddCategoryPopUpToggle();
-  };
+
   return (
     <Grid
       item
@@ -228,23 +220,6 @@ export default function BannerCompany() {
           Created Date : {companyinfo?.creatDate}
         </Typography>
       </Grid>
-
-      <Fab
-        color="primary"
-        aria-label="add"
-        sx={{
-          position: "fixed",
-          bottom: "25px",
-          right: "25px",
-        }}
-        onClick={handleAddItem}
-      >
-        <AddIcon />
-      </Fab>
-      <Additem
-        open={openAddCategoreyPopUp}
-        togglePopUp={AddCategoryPopUpToggle}
-      />
     </Grid>
   );
 }

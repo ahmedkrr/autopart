@@ -64,7 +64,7 @@ export default function AddCarYearPopups(props: AddCarYear) {
     >
       <Dialog open={open} fullWidth maxWidth="sm">
         <DialogTitle align="center" fontSize={30}>
-          Add Car Type
+          Add Car Year
         </DialogTitle>
         <Divider />
 

@@ -2,11 +2,7 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import { AiFillEdit } from "react-icons/ai";
 import AddIcon from "@mui/icons-material/Add";
 import { useToggle } from "../../../common/hooks/useToggle";
-
 import {
-  Box,
-  DialogActions,
-  DialogContent,
   Grid,
   Table,
   TableContainer,
@@ -41,7 +37,6 @@ export default function Categorylist() {
   const visibleItems = categories.slice(startIndex, startIndex + itemsPerPage);
 
   const handleAddCategory = () => {
-    // Handle the update operation here
     AddCategoryPopUpToggle();
   };
 
@@ -57,7 +52,7 @@ export default function Categorylist() {
   };
   useEffect(() => {
     fetchData();
-  }, []);
+  }, [openAddCategoreyPopUp]);
 
   const handleDelete = async (categoreyid: number) => {
     try {
@@ -167,10 +162,12 @@ export default function Categorylist() {
           <AddIcon />
         </Fab>
 
-        <AddCategory
-          open={openAddCategoreyPopUp}
-          togglePopUp={AddCategoryPopUpToggle}
-        />
+        {openAddCategoreyPopUp && (
+          <AddCategory
+            open={openAddCategoreyPopUp}
+            togglePopUp={AddCategoryPopUpToggle}
+          />
+        )}
       </Grid>
 
       <Grid container xs={12} justifyContent="center" mt={3}>
