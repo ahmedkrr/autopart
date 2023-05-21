@@ -15,22 +15,22 @@ export default function NewPassword() {
 
   const handleSend = async () => {
     if (password == confirmpassword) {
-      try {
-        console.log(guid);
-        const response = await axios.post(
-          `${API_ENDPOINT}Account/resetpassword/${guid}`,
-          {
-            password,
+      axios
+        .post(`${API_ENDPOINT}Account/resetpassword/${guid}`, { password })
+        .then((response) => {
+          console.log(response);
+          if (response.status === 200) {
+            alert("The Password Changed Successfully");
+            navigate("/login");
           }
-        );
-
-        if (response.status == 200) {
-          alert("The Password Changed Successfully");
-          navigate("/login");
-        }
-      } catch {
-        return <NotFound />;
-      }
+        })
+        .catch((error) => {
+          if (error.response && error.response.data) {
+            const errorMessage = error.response.data;
+            setPasswordError(errorMessage);
+            console.log(errorMessage);
+          }
+        });
     } else {
       setPasswordError("Passwords do not match");
     }

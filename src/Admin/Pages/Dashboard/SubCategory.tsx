@@ -2,7 +2,6 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import { AiFillEdit } from "react-icons/ai";
 import AddIcon from "@mui/icons-material/Add";
 import { useToggle } from "../../../common/hooks/useToggle";
-
 import {
   Grid,
   Table,
@@ -25,6 +24,7 @@ import { useEffect, useState } from "react";
 import { API_ENDPOINT } from "../../../API";
 import axios from "axios";
 import AddSubCategory from "../../componants/AddSubCategory";
+import EditSubCategoryPopUps from "../../componants/EditSubCategoryPopUps";
 
 type Categories = {
   id: number;
@@ -43,7 +43,11 @@ export default function SubCategory() {
   const [subCategorylist, setsubCategorylist] = useState<SubCategories[]>([]);
 
   const [selectedCategory, setSelectedCategory] = useState("");
+  const [editCategroyId, seteditCategroyId] = useState(0);
+  const [editCategroyName, seteditCategroyName] = useState("");
+
   const [openAddCategoreyPopUp, AddCategoryPopUpToggle] = useToggle();
+  const [openEditCategoreyPopUp, EditSubCategoryPopUpToggle] = useToggle();
 
   const [page, setPage] = useState(1);
   const pageCount = Math.ceil(subCategorylist.length / 5);
@@ -55,7 +59,6 @@ export default function SubCategory() {
   );
 
   const handleAddCategory = () => {
-    // Handle the update operation here
     AddCategoryPopUpToggle();
   };
 
@@ -86,7 +89,7 @@ export default function SubCategory() {
   }, []);
   useEffect(() => {
     fetchSubCategory();
-  }, [selectedCategory, openAddCategoreyPopUp]);
+  }, [selectedCategory, openAddCategoreyPopUp, openEditCategoreyPopUp]);
 
   const handleDelete = async (subId: number) => {
     try {
@@ -203,7 +206,11 @@ export default function SubCategory() {
                         style={{ backgroundColor: "green", color: "white" }}
                         variant="outlined"
                         startIcon={<AiFillEdit />}
-                        // onClick={() => handleUpdate(user.id)}
+                        onClick={() => {
+                          seteditCategroyName(subcategorylist.subCategoryName);
+                          seteditCategroyId(subcategorylist.subCategoryId);
+                          EditSubCategoryPopUpToggle();
+                        }}
                       >
                         Edit
                       </Button>
@@ -236,6 +243,16 @@ export default function SubCategory() {
           categoryId={parseInt(selectedCategory)}
         />
       </Grid>
+
+      {openEditCategoreyPopUp && (
+        <EditSubCategoryPopUps
+          open={openEditCategoreyPopUp}
+          togglePopUp={EditSubCategoryPopUpToggle}
+          SubCategoryName={editCategroyName}
+          subCategoryId={editCategroyId}
+        />
+      )}
+
       <Grid container xs={12} justifyContent="center" mt={3}>
         <Pagination
           count={pageCount}

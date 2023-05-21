@@ -60,7 +60,7 @@ export default function Sidebar({ setActiveComponent }: SidebarProps) {
       </Typography>
 
       {/* <Divider /> */}
-
+      {/* 
       <Typography paddingLeft={4} color="white">
         <Box mr={2} display="inline-flex">
           <BsFillFilePostFill
@@ -70,7 +70,7 @@ export default function Sidebar({ setActiveComponent }: SidebarProps) {
           />
         </Box>
         Items List
-      </Typography>
+      </Typography> */}
 
       {/* <Divider /> */}
 

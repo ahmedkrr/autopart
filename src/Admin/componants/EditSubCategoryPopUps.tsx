@@ -10,27 +10,26 @@ import {
   Typography,
 } from "@mui/material";
 import { Button } from "@mui/material";
-import UserList from "../Pages/Dashboard/UserList";
 import { useState } from "react";
 import axios from "axios";
 import { API_ENDPOINT } from "../../API";
 import { useForm } from "react-hook-form";
-interface Addcategory {
+interface Editcategory {
   togglePopUp: () => void;
-  fetchData: () => void;
 
   open: boolean;
-  categoryId: number;
-  categoryName: string;
+  subCategoryId: number;
+  SubCategoryName: string;
 }
-export default function EditCategoryPopUps(props: Addcategory) {
+export default function EditSubCategoryPopUps(props: Editcategory) {
   const { open, togglePopUp } = props;
   const [photoname, setphotoname] = useState("");
-  const [categoryname, setCategoryname] = useState(props.categoryName);
+  const [subCategoryname, setSubCategoryname] = useState(props.SubCategoryName);
   const [photofile, setphotofile] = useState<File | null>(null);
   const { handleSubmit } = useForm();
+
   const formData = new FormData();
-  formData.append("CategoryName", categoryname);
+  formData.append("CategoryName", subCategoryname);
   formData.append("file", photofile != null ? photofile : "");
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -40,21 +39,20 @@ export default function EditCategoryPopUps(props: Addcategory) {
     }
   };
   const handleNameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setCategoryname(event.target.value);
+    setSubCategoryname(event.target.value);
   };
 
   const handleEditCategory = async () => {
     try {
       console.log(formData);
       const response = await axios.put(
-        `${API_ENDPOINT}Admin/UpdateCategory/${props.categoryId}`,
+        `${API_ENDPOINT}Admin/UpdateSubCategory/${props.subCategoryId}`,
         formData
       );
       console.log(response.data);
       if (response.status === 200) {
         togglePopUp();
         alert(`Category Edited successfully!`);
-        props.fetchData();
       }
     } catch (error) {
       console.log(error);
@@ -80,7 +78,7 @@ export default function EditCategoryPopUps(props: Addcategory) {
             <Grid container columnSpacing={3} justifyContent="center">
               <Grid item>
                 <TextField
-                  value={categoryname}
+                  value={subCategoryname}
                   type="text"
                   label="Name"
                   required

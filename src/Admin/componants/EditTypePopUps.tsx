@@ -46,7 +46,7 @@ export default function EditTypePopups(props: EditTypePopupsProps) {
 
   useEffect(() => {
     getUserInfo();
-  }, []);
+  }, [props.typeId]);
 
   return (
     <Box

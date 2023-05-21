@@ -20,6 +20,7 @@ import { useEffect, useState } from "react";
 import { API_ENDPOINT } from "../../../API";
 import axios from "axios";
 import AddCategory from "../../componants/AddCategory";
+import EditCategoryPopUps from "../../componants/EditCategoryPopUps";
 
 type Categories = {
   id: number;
@@ -28,7 +29,11 @@ type Categories = {
 };
 export default function Categorylist() {
   const [categories, setcategoreylist] = useState<Categories[]>([]);
+  const [editcategory, seteditcategory] = useState(0);
+  const [editcategoryname, seteditcategoryname] = useState("");
+
   const [openAddCategoreyPopUp, AddCategoryPopUpToggle] = useToggle();
+  const [openEditCategoreyPopUp, EditCategoryPopUpToggle] = useToggle();
 
   const [page, setPage] = useState(1);
   const pageCount = Math.ceil(categories.length / 5);
@@ -137,7 +142,11 @@ export default function Categorylist() {
                         style={{ backgroundColor: "green", color: "white" }}
                         variant="outlined"
                         startIcon={<AiFillEdit />}
-                        // onClick={() => handleUpdate(user.id)}
+                        onClick={() => {
+                          seteditcategory(categorey.id);
+                          seteditcategoryname(categorey.categoryName);
+                          EditCategoryPopUpToggle();
+                        }}
                       >
                         Edit
                       </Button>
@@ -169,6 +178,16 @@ export default function Categorylist() {
           />
         )}
       </Grid>
+
+      {openEditCategoreyPopUp && (
+        <EditCategoryPopUps
+          open={openEditCategoreyPopUp}
+          togglePopUp={EditCategoryPopUpToggle}
+          categoryId={editcategory}
+          categoryName={editcategoryname}
+          fetchData={fetchData}
+        />
+      )}
 
       <Grid container xs={12} justifyContent="center" mt={3}>
         <Pagination
