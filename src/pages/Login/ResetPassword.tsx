@@ -1,23 +1,28 @@
 import { Button, Divider, Grid, Typography } from "@mui/material";
-import React, { useState } from "react";
+import { useState } from "react";
 import { ThemedTextField } from "../../common/components/themedTextField/ThemedTextField";
 import axios from "axios";
 import { API_ENDPOINT } from "../../API";
 
 export default function ResetPassword() {
   const [To, setEmail] = useState("");
+  const [errorMessage, setErrormessage] = useState("");
 
   const handleSend = async () => {
-    try {
-      console.log(To);
-      const response = await axios.post(`${API_ENDPOINT}Account/sendEmail`, {
+    axios
+      .post(`${API_ENDPOINT}Account/sendEmail`, {
         To: To,
+      })
+      .then((response) => {
+        console.log(response);
+        if (response.status === 200) {
+          alert("Check Your Link in the email");
+        }
+      })
+      .catch((error) => {
+        if (error.response && error.response.data)
+          setErrormessage(error.response.data);
       });
-
-      if (response.status == 200) {
-        alert("Check Your Link in the email");
-      }
-    } catch {}
   };
 
   return (
@@ -55,6 +60,10 @@ export default function ResetPassword() {
             setEmail(event.target.value);
           }}
         />
+
+        <Typography variant="body2" color={"error"}>
+          {errorMessage}
+        </Typography>
 
         <Grid mt={2}>
           <Button variant="contained" onClick={handleSend}>
