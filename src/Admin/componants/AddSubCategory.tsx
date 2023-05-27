@@ -28,11 +28,7 @@ export default function AddSubCategory(props: AddSubcategory) {
   const [photofile, setphotofile] = useState<File | null>(null);
   const [messageapi, setmessage] = useState("");
   console.log(typeof props.categoryId);
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm();
+  const { handleSubmit } = useForm();
 
   const formData = new FormData();
   formData.append("SubCategoryName", categoryname);
@@ -56,7 +52,9 @@ export default function AddSubCategory(props: AddSubcategory) {
       console.log(response.data);
       if (response.data.success) {
         togglePopUp();
-        alert(`Category added successfully! ${response.data.categoryname}`);
+        alert(`Category added successfully!`);
+        setphotoname("");
+        setmessage("");
       } else {
         setmessage(response.data.message);
       }
@@ -133,6 +131,8 @@ export default function AddSubCategory(props: AddSubcategory) {
               variant="outlined"
               onClick={() => {
                 togglePopUp();
+                setphotoname("");
+                setmessage("");
               }}
             >
               Cancle

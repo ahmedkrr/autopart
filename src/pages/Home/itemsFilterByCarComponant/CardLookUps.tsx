@@ -3,7 +3,7 @@ import Card from "@mui/material/Card";
 import CardActions from "@mui/material/CardActions";
 import CardContent from "@mui/material/CardContent";
 import CardMedia from "@mui/material/CardMedia";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 type ItemsForm = {
@@ -29,6 +29,7 @@ type CarditemProps = {
 export default function CardLookUps({ item }: CarditemProps) {
   const [showMore, setShowMore] = useState(false);
   const navigate = useNavigate();
+
   return (
     <>
       <Card sx={{ maxWidth: 345 }}>
@@ -77,7 +78,10 @@ export default function CardLookUps({ item }: CarditemProps) {
             Company: {item?.companyName}
           </Typography>
         </CardContent>
-        <CardActions sx={{ justifyContent: "right" }}></CardActions>
+
+        <CardActions sx={{ justifyContent: "right" }}>
+          {/* <Button variant="contained">Add Cart</Button> */}
+        </CardActions>
       </Card>
     </>
   );

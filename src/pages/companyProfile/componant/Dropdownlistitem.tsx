@@ -238,7 +238,7 @@ export function DropdownlitstCategory(props: Propss) {
           id="Category"
           label="Category"
           color="primary"
-          sx={{ background: "#FFFFE0", color: "black", alignItems: "center" }}
+          sx={{ background: "white", color: "black", alignItems: "center" }}
           MenuProps={{
             PaperProps: {
               style: {
@@ -282,7 +282,7 @@ export function DropdownlitstCategory(props: Propss) {
           label="Sub Category"
           color="primary"
           sx={{
-            background: "#FFFFE0",
+            background: "white",
             color: "black",
             alignItems: "center",
           }}
