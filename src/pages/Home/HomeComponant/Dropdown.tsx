@@ -96,9 +96,8 @@ export default function Dropdown() {
                 setSelectedCar(
                   cars.find((car) => car.id == parseInt(`${e.target.value}`))
                 );
-                console.log(
-                  cars.find((car) => car.id == parseInt(`${e.target.value}`))
-                );
+                setSelectedCarType(undefined);
+                setSelectedCarYear(undefined);
               }}
               required
               labelId="CAR"

@@ -52,7 +52,7 @@ export default function AddSubCategory(props: AddSubcategory) {
       console.log(response.data);
       if (response.data.success) {
         togglePopUp();
-        alert(`Category added successfully!`);
+        alert(`Sub Category added successfully!`);
         setphotoname("");
         setmessage("");
       } else {

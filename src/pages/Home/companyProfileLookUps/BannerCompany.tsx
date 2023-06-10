@@ -12,6 +12,7 @@ import { useEffect, useState } from "react";
 import { API_ENDPOINT } from "../../../API";
 import defaultbackground from "../../../static/defaultbackground.jpg";
 import { useLocation } from "react-router-dom";
+import { MdLocationPin, MdPhoneInTalk } from "react-icons/md";
 
 type CompanyInfo = {
   id: number;
@@ -119,14 +120,12 @@ export default function BannerCompany() {
         ml="120px"
         mb="30px"
       >
-        <Typography variant="h5">
-          Company Name : {companyinfo?.name}{" "}
+        <Typography variant="h5">{companyinfo?.name} </Typography>
+        <Typography variant="subtitle2">
+          <MdLocationPin /> {companyinfo?.address}
         </Typography>
         <Typography variant="subtitle2">
-          Conpany Address : {companyinfo?.address}{" "}
-        </Typography>
-        <Typography variant="subtitle2">
-          Phone Number : {companyinfo?.companyPhoneNumber}{" "}
+          <MdPhoneInTalk /> {companyinfo?.companyPhoneNumber}
         </Typography>
         <Typography variant="body2">
           Created Date : {companyinfo?.creatDate}

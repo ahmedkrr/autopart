@@ -13,6 +13,7 @@ import { API_ENDPOINT } from "../../../API";
 import defaultbackground from "../../../static/defaultbackground.jpg";
 import { companyowner } from "../../../common/utils/helpers";
 import EditIcon from "@mui/icons-material/Edit";
+import { MdLocationPin, MdPhoneInTalk } from "react-icons/md";
 
 type CompanyInfo = {
   id: number;
@@ -74,6 +75,7 @@ export default function BannerCompany() {
       }
     }
   };
+
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.files) {
       try {
@@ -202,23 +204,23 @@ export default function BannerCompany() {
       )}
       <Grid
         item
-        xs={4}
+        xs={12}
         // style={{ border: "2px solid red" }}
         ml="120px"
         mb="30px"
       >
-        <Typography variant="h5">
-          Company Name : {companyinfo?.name}{" "}
+        <Typography variant="h4">{companyinfo?.name}</Typography>
+        <Typography variant="subtitle2">
+          <MdLocationPin /> {companyinfo?.address}
         </Typography>
         <Typography variant="subtitle2">
-          Conpany Address : {companyinfo?.address}{" "}
-        </Typography>
-        <Typography variant="subtitle2">
-          Phone Number : {companyinfo?.companyPhoneNumber}{" "}
+          <MdPhoneInTalk /> {companyinfo?.companyPhoneNumber}
         </Typography>
         <Typography variant="body2">
           Created Date : {companyinfo?.creatDate}
         </Typography>
+
+        {/* <Button>Edit Info</Button> */}
       </Grid>
     </Grid>
   );

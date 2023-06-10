@@ -132,7 +132,7 @@ export function Navbar() {
                   </MenuItem>
                 )}
 
-                <MenuItem>Account</MenuItem>
+                {/* <MenuItem>Account</MenuItem> */}
                 <MenuItem onClick={handleLogout}>Logout</MenuItem>
               </Menu>
             </Box>
